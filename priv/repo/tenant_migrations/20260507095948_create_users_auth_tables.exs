@@ -6,6 +6,7 @@ defmodule BinduBackend.Repo.Migrations.CreateUsersAuthTables do
 
     create table(:users, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
+      add :tenant_id, :binary_id, null: false
       add :first_name, :string, null: false
       add :last_name, :string, null: false
       add :email, :citext, null: false

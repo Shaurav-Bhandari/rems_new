@@ -7,6 +7,7 @@
 # General application configuration
 import Config
 
+# Scopes — both defined in a single block to avoid the second overwriting the first
 config :bindu_backend, :scopes,
   super_admin: [
     default: false,
@@ -18,9 +19,7 @@ config :bindu_backend, :scopes,
     schema_table: :super_admins,
     test_data_fixture: BinduBackend.SuperAdminsFixtures,
     test_setup_helper: :register_and_log_in_super_admin
-  ]
-
-config :bindu_backend, :scopes,
+  ],
   user: [
     default: true,
     module: BinduBackend.Accounts.Scope,
@@ -83,11 +82,13 @@ config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Multi-tenancy
+# Multi-tenancy via Triplex
+# - tenant_prefix: each tenant's Postgres schema will be named e.g. "tenant_acme"
+# - reserved_tenants: prevents Triplex from creating/migrating system schemas
 config :triplex,
   repo: BinduBackend.Repo,
-  # each tenant schema will be e.g. tenant_acme
-  tenant_prefix: "tenant_"
+  tenant_prefix: "tenant_",
+  reserved_tenants: ["public", "information_schema", "pg_catalog", "pg_toast"]
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
