@@ -6,7 +6,7 @@ defmodule BinduBackend.Kots do
   import Ecto.Query, warn: false
   alias BinduBackend.Repo
 
-  alias BinduBackend.Kots.Kot
+  alias BinduBackend.Kot.Kot
   alias BinduBackend.Accounts.Scope
 
   @doc """
@@ -77,7 +77,7 @@ defmodule BinduBackend.Kots do
   def create_kot(%Scope{} = scope, attrs) do
     with {:ok, kot = %Kot{}} <-
            %Kot{}
-           |> Kot.changeset(attrs, scope)
+           |> Kot.changeset(attrs)
            |> Repo.insert() do
       broadcast_kot(scope, {:created, kot})
       {:ok, kot}
@@ -101,7 +101,7 @@ defmodule BinduBackend.Kots do
 
     with {:ok, kot = %Kot{}} <-
            kot
-           |> Kot.changeset(attrs, scope)
+           |> Kot.changeset(attrs)
            |> Repo.update() do
       broadcast_kot(scope, {:updated, kot})
       {:ok, kot}
@@ -142,6 +142,6 @@ defmodule BinduBackend.Kots do
   def change_kot(%Scope{} = scope, %Kot{} = kot, attrs \\ %{}) do
     true = kot.user_id == scope.user.id
 
-    Kot.changeset(kot, attrs, scope)
+    Kot.changeset(kot, attrs)
   end
 end

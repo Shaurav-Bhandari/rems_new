@@ -9,7 +9,19 @@ defmodule BinduBackend.InventoriesTest do
     import BinduBackend.AccountsFixtures, only: [user_scope_fixture: 0]
     import BinduBackend.InventoriesFixtures
 
-    @invalid_attrs %{name: nil, description: nil, category: nil, sku: nil, measurement_unit: nil, current_quantity: nil, minimum_quantity: nil, maximum_quantity: nil, reorder_point: nil, unit_cost: nil, last_restock_date: nil}
+    @invalid_attrs %{
+      name: nil,
+      description: nil,
+      category: nil,
+      sku: nil,
+      measurement_unit: nil,
+      current_quantity: nil,
+      minimum_quantity: nil,
+      maximum_quantity: nil,
+      reorder_point: nil,
+      unit_cost: nil,
+      last_restock_date: nil
+    }
 
     test "list_inventory_item/1 returns all scoped inventory_item" do
       scope = user_scope_fixture()
@@ -25,11 +37,27 @@ defmodule BinduBackend.InventoriesTest do
       inventory = inventory_fixture(scope)
       other_scope = user_scope_fixture()
       assert Inventories.get_inventory!(scope, inventory.id) == inventory
-      assert_raise Ecto.NoResultsError, fn -> Inventories.get_inventory!(other_scope, inventory.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Inventories.get_inventory!(other_scope, inventory.id)
+      end
     end
 
     test "create_inventory/2 with valid data creates a inventory" do
-      valid_attrs = %{name: "some name", description: "some description", category: "some category", sku: "some sku", measurement_unit: "some measurement_unit", current_quantity: 120.5, minimum_quantity: 120.5, maximum_quantity: 120.5, reorder_point: 120.5, unit_cost: 120.5, last_restock_date: ~D[2026-05-09]}
+      valid_attrs = %{
+        name: "some name",
+        description: "some description",
+        category: "some category",
+        sku: "some sku",
+        measurement_unit: "some measurement_unit",
+        current_quantity: 120.5,
+        minimum_quantity: 120.5,
+        maximum_quantity: 120.5,
+        reorder_point: 120.5,
+        unit_cost: 120.5,
+        last_restock_date: ~D[2026-05-09]
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %Inventory{} = inventory} = Inventories.create_inventory(scope, valid_attrs)
@@ -55,9 +83,24 @@ defmodule BinduBackend.InventoriesTest do
     test "update_inventory/3 with valid data updates the inventory" do
       scope = user_scope_fixture()
       inventory = inventory_fixture(scope)
-      update_attrs = %{name: "some updated name", description: "some updated description", category: "some updated category", sku: "some updated sku", measurement_unit: "some updated measurement_unit", current_quantity: 456.7, minimum_quantity: 456.7, maximum_quantity: 456.7, reorder_point: 456.7, unit_cost: 456.7, last_restock_date: ~D[2026-05-10]}
 
-      assert {:ok, %Inventory{} = inventory} = Inventories.update_inventory(scope, inventory, update_attrs)
+      update_attrs = %{
+        name: "some updated name",
+        description: "some updated description",
+        category: "some updated category",
+        sku: "some updated sku",
+        measurement_unit: "some updated measurement_unit",
+        current_quantity: 456.7,
+        minimum_quantity: 456.7,
+        maximum_quantity: 456.7,
+        reorder_point: 456.7,
+        unit_cost: 456.7,
+        last_restock_date: ~D[2026-05-10]
+      }
+
+      assert {:ok, %Inventory{} = inventory} =
+               Inventories.update_inventory(scope, inventory, update_attrs)
+
       assert inventory.name == "some updated name"
       assert inventory.description == "some updated description"
       assert inventory.category == "some updated category"
@@ -84,7 +127,10 @@ defmodule BinduBackend.InventoriesTest do
     test "update_inventory/3 with invalid data returns error changeset" do
       scope = user_scope_fixture()
       inventory = inventory_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Inventories.update_inventory(scope, inventory, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Inventories.update_inventory(scope, inventory, @invalid_attrs)
+
       assert inventory == Inventories.get_inventory!(scope, inventory.id)
     end
 

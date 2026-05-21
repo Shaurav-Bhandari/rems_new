@@ -44,12 +44,22 @@ defmodule BinduBackend.Payments.PaymentRecord do
   def changeset(payment, attrs) do
     payment
     |> cast(attrs, [
-      :amount, :payment_method, :provider, :status,
-      :transaction_id, :payment_date,
-      :qr_image_data, :qr_expires_at, :fonepay_transaction_id,
-      :verify_token, :encoded_params, :remarks,
-      :failure_reason, :metadata,
-      :order_id, :user_id
+      :amount,
+      :payment_method,
+      :provider,
+      :status,
+      :transaction_id,
+      :payment_date,
+      :qr_image_data,
+      :qr_expires_at,
+      :fonepay_transaction_id,
+      :verify_token,
+      :encoded_params,
+      :remarks,
+      :failure_reason,
+      :metadata,
+      :order_id,
+      :user_id
     ])
     |> validate_required([:amount, :payment_method, :provider, :payment_date, :user_id])
     |> validate_number(:amount, greater_than: 0)
@@ -73,14 +83,21 @@ defmodule BinduBackend.Payments.PaymentRecord do
 
   def confirm_changeset(payment, transaction_id) do
     now = DateTime.utc_now(:second)
-    cast(payment, %{
-      status: "confirmed",
-      transaction_id: transaction_id,
-      payment_date: now
-    }, [:status, :transaction_id, :payment_date])
+
+    cast(
+      payment,
+      %{
+        status: "confirmed",
+        transaction_id: transaction_id,
+        payment_date: now
+      },
+      [:status, :transaction_id, :payment_date]
+    )
   end
 
   def qr_expired?(%__MODULE__{qr_expires_at: nil}), do: false
+
   def qr_expired?(%__MODULE__{qr_expires_at: expires_at}) do
-    DateTime.compare(DateTime.utc_now(), expires_at) == :gt  end
+    DateTime.compare(DateTime.utc_now(), expires_at) == :gt
+  end
 end

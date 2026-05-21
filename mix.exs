@@ -68,7 +68,6 @@ defmodule BinduBackend.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:triplex, "~> 1.3"}
-
     ]
   end
 

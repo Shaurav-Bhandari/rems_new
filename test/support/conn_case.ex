@@ -64,16 +64,57 @@ defmodule BinduBackendWeb.ConnCase do
   def log_in_user(conn, user, opts \\ []) do
     token = BinduBackend.Accounts.generate_user_session_token(user)
 
-    maybe_set_token_authenticated_at(token, opts[:token_authenticated_at])
+    maybe_set_user_token_authenticated_at(token, opts[:token_authenticated_at])
 
     conn
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
   end
 
-  defp maybe_set_token_authenticated_at(_token, nil), do: nil
+  defp maybe_set_user_token_authenticated_at(_token, nil), do: nil
 
-  defp maybe_set_token_authenticated_at(token, authenticated_at) do
+  defp maybe_set_user_token_authenticated_at(token, authenticated_at) do
     BinduBackend.AccountsFixtures.override_token_authenticated_at(token, authenticated_at)
+  end
+
+  @doc """
+  Setup helper that registers and logs in super_admins.
+
+      setup :register_and_log_in_super_admin
+
+  It stores an updated connection and a registered super_admin in the
+  test context.
+  """
+  def register_and_log_in_super_admin(%{conn: conn} = context) do
+    super_admin = BinduBackend.SuperAdminsFixtures.super_admin_fixture()
+    scope = BinduBackend.SuperAdmins.Scope.for_super_admin(super_admin)
+
+    opts =
+      context
+      |> Map.take([:token_authenticated_at])
+      |> Enum.into([])
+
+    %{conn: log_in_super_admin(conn, super_admin, opts), super_admin: super_admin, scope: scope}
+  end
+
+  @doc """
+  Logs the given `super_admin` into the `conn`.
+
+  It returns an updated `conn`.
+  """
+  def log_in_super_admin(conn, super_admin, opts \\ []) do
+    token = BinduBackend.SuperAdmins.generate_super_admin_session_token(super_admin)
+
+    maybe_set_super_admin_token_authenticated_at(token, opts[:token_authenticated_at])
+
+    conn
+    |> Phoenix.ConnTest.init_test_session(%{})
+    |> Plug.Conn.put_session(:super_admin_token, token)
+  end
+
+  defp maybe_set_super_admin_token_authenticated_at(_token, nil), do: nil
+
+  defp maybe_set_super_admin_token_authenticated_at(token, authenticated_at) do
+    BinduBackend.SuperAdminsFixtures.override_token_authenticated_at(token, authenticated_at)
   end
 end

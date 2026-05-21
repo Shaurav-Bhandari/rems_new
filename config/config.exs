@@ -8,6 +8,19 @@
 import Config
 
 config :bindu_backend, :scopes,
+  super_admin: [
+    default: false,
+    module: BinduBackend.SuperAdmins.Scope,
+    assign_key: :current_scope,
+    access_path: [:super_admin, :id],
+    schema_key: :super_admin_id,
+    schema_type: :id,
+    schema_table: :super_admins,
+    test_data_fixture: BinduBackend.SuperAdminsFixtures,
+    test_setup_helper: :register_and_log_in_super_admin
+  ]
+
+config :bindu_backend, :scopes,
   user: [
     default: true,
     module: BinduBackend.Accounts.Scope,
@@ -70,11 +83,11 @@ config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-
 # Multi-tenancy
 config :triplex,
   repo: BinduBackend.Repo,
-  tenant_prefix: "tenant_"   # each tenant schema will be e.g. tenant_acme
+  # each tenant schema will be e.g. tenant_acme
+  tenant_prefix: "tenant_"
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason

@@ -8,7 +8,15 @@ defmodule BinduBackend.OrdersTest do
 
     import BinduBackend.OrdersFixtures
 
-    @invalid_attrs %{taken_by_id: nil, sub_total: nil, service_charge: nil, order_status: nil, order_type: nil, total_amount: nil, notes: nil}
+    @invalid_attrs %{
+      taken_by_id: nil,
+      sub_total: nil,
+      service_charge: nil,
+      order_status: nil,
+      order_type: nil,
+      total_amount: nil,
+      notes: nil
+    }
 
     test "list_orders/0 returns all orders" do
       order = order_fixture()
@@ -21,7 +29,15 @@ defmodule BinduBackend.OrdersTest do
     end
 
     test "create_order/1 with valid data creates a order" do
-      valid_attrs = %{taken_by_id: "7488a646-e31f-11e4-aace-600308960662", sub_total: 120.5, service_charge: 120.5, order_status: "some order_status", order_type: "some order_type", total_amount: 120.5, notes: "some notes"}
+      valid_attrs = %{
+        taken_by_id: "7488a646-e31f-11e4-aace-600308960662",
+        sub_total: 120.5,
+        service_charge: 120.5,
+        order_status: "some order_status",
+        order_type: "some order_type",
+        total_amount: 120.5,
+        notes: "some notes"
+      }
 
       assert {:ok, %Order{} = order} = Orders.create_order(valid_attrs)
       assert order.taken_by_id == "7488a646-e31f-11e4-aace-600308960662"
@@ -39,7 +55,16 @@ defmodule BinduBackend.OrdersTest do
 
     test "update_order/2 with valid data updates the order" do
       order = order_fixture()
-      update_attrs = %{taken_by_id: "7488a646-e31f-11e4-aace-600308960668", sub_total: 456.7, service_charge: 456.7, order_status: "some updated order_status", order_type: "some updated order_type", total_amount: 456.7, notes: "some updated notes"}
+
+      update_attrs = %{
+        taken_by_id: "7488a646-e31f-11e4-aace-600308960668",
+        sub_total: 456.7,
+        service_charge: 456.7,
+        order_status: "some updated order_status",
+        order_type: "some updated order_type",
+        total_amount: 456.7,
+        notes: "some updated notes"
+      }
 
       assert {:ok, %Order{} = order} = Orders.update_order(order, update_attrs)
       assert order.taken_by_id == "7488a646-e31f-11e4-aace-600308960668"
@@ -101,7 +126,9 @@ defmodule BinduBackend.OrdersTest do
       order_group = order_group_fixture()
       update_attrs = %{group_name: "some updated group_name"}
 
-      assert {:ok, %OrderGroup{} = order_group} = Orders.update_order_group(order_group, update_attrs)
+      assert {:ok, %OrderGroup{} = order_group} =
+               Orders.update_order_group(order_group, update_attrs)
+
       assert order_group.group_name == "some updated group_name"
     end
 
@@ -129,7 +156,14 @@ defmodule BinduBackend.OrdersTest do
     import BinduBackend.AccountsFixtures, only: [user_scope_fixture: 0]
     import BinduBackend.OrdersFixtures
 
-    @invalid_attrs %{status: nil, quantity: nil, menu_item_id: nil, unit_price: nil, notes: nil, item_modifier: nil}
+    @invalid_attrs %{
+      status: nil,
+      quantity: nil,
+      menu_item_id: nil,
+      unit_price: nil,
+      notes: nil,
+      item_modifier: nil
+    }
 
     test "list_order_items/1 returns all scoped order_items" do
       scope = user_scope_fixture()
@@ -145,11 +179,22 @@ defmodule BinduBackend.OrdersTest do
       order_item = order_item_fixture(scope)
       other_scope = user_scope_fixture()
       assert Orders.get_order_item!(scope, order_item.id) == order_item
-      assert_raise Ecto.NoResultsError, fn -> Orders.get_order_item!(other_scope, order_item.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Orders.get_order_item!(other_scope, order_item.id)
+      end
     end
 
     test "create_order_item/2 with valid data creates a order_item" do
-      valid_attrs = %{status: "some status", quantity: 42, menu_item_id: 42, unit_price: 120.5, notes: "some notes", item_modifier: "some item_modifier"}
+      valid_attrs = %{
+        status: "some status",
+        quantity: 42,
+        menu_item_id: 42,
+        unit_price: 120.5,
+        notes: "some notes",
+        item_modifier: "some item_modifier"
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %OrderItem{} = order_item} = Orders.create_order_item(scope, valid_attrs)
@@ -170,9 +215,19 @@ defmodule BinduBackend.OrdersTest do
     test "update_order_item/3 with valid data updates the order_item" do
       scope = user_scope_fixture()
       order_item = order_item_fixture(scope)
-      update_attrs = %{status: "some updated status", quantity: 43, menu_item_id: 43, unit_price: 456.7, notes: "some updated notes", item_modifier: "some updated item_modifier"}
 
-      assert {:ok, %OrderItem{} = order_item} = Orders.update_order_item(scope, order_item, update_attrs)
+      update_attrs = %{
+        status: "some updated status",
+        quantity: 43,
+        menu_item_id: 43,
+        unit_price: 456.7,
+        notes: "some updated notes",
+        item_modifier: "some updated item_modifier"
+      }
+
+      assert {:ok, %OrderItem{} = order_item} =
+               Orders.update_order_item(scope, order_item, update_attrs)
+
       assert order_item.status == "some updated status"
       assert order_item.quantity == 43
       assert order_item.menu_item_id == 43
@@ -194,7 +249,10 @@ defmodule BinduBackend.OrdersTest do
     test "update_order_item/3 with invalid data returns error changeset" do
       scope = user_scope_fixture()
       order_item = order_item_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Orders.update_order_item(scope, order_item, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Orders.update_order_item(scope, order_item, @invalid_attrs)
+
       assert order_item == Orders.get_order_item!(scope, order_item.id)
     end
 

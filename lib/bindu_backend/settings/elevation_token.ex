@@ -26,9 +26,20 @@ defmodule BinduBackend.Settings.ElevationToken do
 
   def changeset(token, attrs) do
     token
-    |> cast(attrs, [:token_hash, :permission, :expires_at, :is_used,
-        :used_at, :request_reason, :discount_amount,
-        :ip_address, :device_id, :user_id, :manager_id, :order_id])
+    |> cast(attrs, [
+      :token_hash,
+      :permission,
+      :expires_at,
+      :is_used,
+      :used_at,
+      :request_reason,
+      :discount_amount,
+      :ip_address,
+      :device_id,
+      :user_id,
+      :manager_id,
+      :order_id
+    ])
     |> validate_required([:token_hash, :permission, :expires_at, :user_id, :manager_id])
     |> unique_constraint(:token_hash)
     |> foreign_key_constraint(:user_id)

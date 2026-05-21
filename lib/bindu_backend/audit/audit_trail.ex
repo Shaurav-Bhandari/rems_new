@@ -43,14 +43,31 @@ defmodule BinduBackend.Audit.AuditTrail do
   def changeset(trail, attrs) do
     trail
     |> cast(attrs, [
-      :event_type, :event_category, :event_description,
-      :severity, :entity_type, :entity_id,
-      :old_values, :new_values, :request_url,
-      :http_method, :ip_address, :user_agent,
-      :session_id, :geolocation, :risk_level,
-      :requires_review, :is_anomalous, :anomaly_reason,
-      :compliance_flags, :is_pci_relevant, :is_gdpr_relevant,
-      :timestamp, :reviewed_at, :user_id, :reviewed_by_id
+      :event_type,
+      :event_category,
+      :event_description,
+      :severity,
+      :entity_type,
+      :entity_id,
+      :old_values,
+      :new_values,
+      :request_url,
+      :http_method,
+      :ip_address,
+      :user_agent,
+      :session_id,
+      :geolocation,
+      :risk_level,
+      :requires_review,
+      :is_anomalous,
+      :anomaly_reason,
+      :compliance_flags,
+      :is_pci_relevant,
+      :is_gdpr_relevant,
+      :timestamp,
+      :reviewed_at,
+      :user_id,
+      :reviewed_by_id
     ])
     |> validate_required([:severity, :risk_level, :timestamp])
     |> validate_inclusion(:severity, @valid_severities)

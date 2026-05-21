@@ -2,7 +2,7 @@ defmodule BinduBackend.Tenants.Tenant do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @{primary_key {:id, :binary_id, autogenerate: true}}
+  @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "tenants" do
     field :name, :string
@@ -14,6 +14,8 @@ defmodule BinduBackend.Tenants.Tenant do
     field :user_id, :id
 
     timestamps(type: :utc_datetime)
+
+    has_one :onboarding, BinduBackend.Tenants.TenantOnboarding, on_delete: :delete_all
   end
 
   @doc false

@@ -19,14 +19,22 @@ defmodule BinduBackend.Restaurant.RestaurantTable do
     has_many :table_group_items, BinduBackend.Restaurant.TableGroupItem
     has_many :table_groups, through: [:table_group_items, :table_group]
     has_many :table_reservations, BinduBackend.Restaurant.TableReservation
-    has_many :orders, BinduBackend.Orders.Order
+    has_many :orders, BinduBackend.Orders.Order, foreign_key: :table_id
 
     timestamps(type: :utc_datetime)
   end
 
   def changeset(table, attrs) do
     table
-    |> cast(attrs, [:table_number, :capacity, :table_shape, :display_order, :is_mergeable, :area_id, :status_id])
+    |> cast(attrs, [
+      :table_number,
+      :capacity,
+      :table_shape,
+      :display_order,
+      :is_mergeable,
+      :area_id,
+      :status_id
+    ])
     |> validate_required([:table_number, :capacity, :area_id, :status_id])
     |> validate_number(:capacity, greater_than_or_equal_to: 0)
     |> validate_number(:table_number, greater_than: 0)

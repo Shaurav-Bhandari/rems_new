@@ -47,20 +47,42 @@ defmodule BinduBackend.Settings.RestaurantProfile do
   def changeset(profile, attrs) do
     profile
     |> cast(attrs, [
-      :currency_code, :tax_registration_number, :service_charge_pct,
-      :tax_inclusive_pricing, :default_tax_rate, :alcohol_tax_rate,
-      :auto_kot_firing, :table_expiration_minutes, :stock_warning_threshold,
-      :enable_happy_hour, :happy_hour_start, :happy_hour_end, :happy_hour_discount,
-      :language_iso, :brand_primary_color, :brand_secondary_color,
-      :logo_url, :receipt_header, :receipt_footer,
-      :require_manager_pin_for_void, :require_manager_pin_for_discount,
-      :max_discount_pct_staff, :max_discount_pct_manager,
-      :offsite_login_allowed, :allowed_ip_ranges,
-      :gdpr_enabled, :data_retention_days, :require_age_verification
+      :currency_code,
+      :tax_registration_number,
+      :service_charge_pct,
+      :tax_inclusive_pricing,
+      :default_tax_rate,
+      :alcohol_tax_rate,
+      :auto_kot_firing,
+      :table_expiration_minutes,
+      :stock_warning_threshold,
+      :enable_happy_hour,
+      :happy_hour_start,
+      :happy_hour_end,
+      :happy_hour_discount,
+      :language_iso,
+      :brand_primary_color,
+      :brand_secondary_color,
+      :logo_url,
+      :receipt_header,
+      :receipt_footer,
+      :require_manager_pin_for_void,
+      :require_manager_pin_for_discount,
+      :max_discount_pct_staff,
+      :max_discount_pct_manager,
+      :offsite_login_allowed,
+      :allowed_ip_ranges,
+      :gdpr_enabled,
+      :data_retention_days,
+      :require_age_verification
     ])
     |> validate_required([:currency_code])
-    |> validate_format(:brand_primary_color, ~r/^#[0-9A-Fa-f]{6}$/, message: "must be valid hex color")
-    |> validate_format(:brand_secondary_color, ~r/^#[0-9A-Fa-f]{6}$/, message: "must be valid hex color")
+    |> validate_format(:brand_primary_color, ~r/^#[0-9A-Fa-f]{6}$/,
+      message: "must be valid hex color"
+    )
+    |> validate_format(:brand_secondary_color, ~r/^#[0-9A-Fa-f]{6}$/,
+      message: "must be valid hex color"
+    )
     |> validate_number(:service_charge_pct, greater_than_or_equal_to: 0)
     |> validate_number(:default_tax_rate, greater_than_or_equal_to: 0)
     |> validate_number(:happy_hour_discount, greater_than_or_equal_to: 0)

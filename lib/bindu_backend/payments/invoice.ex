@@ -29,10 +29,19 @@ defmodule BinduBackend.Payments.Invoice do
   def changeset(invoice, attrs) do
     invoice
     |> cast(attrs, [
-      :invoice_number, :invoice_date, :due_date,
-      :sub_total, :tax, :discount_amount, :gateway_fee,
-      :total_amount, :status, :metadata,
-      :order_id, :payment_record_id, :user_id
+      :invoice_number,
+      :invoice_date,
+      :due_date,
+      :sub_total,
+      :tax,
+      :discount_amount,
+      :gateway_fee,
+      :total_amount,
+      :status,
+      :metadata,
+      :order_id,
+      :payment_record_id,
+      :user_id
     ])
     |> validate_required([:invoice_number, :invoice_date, :sub_total, :total_amount, :user_id])
     |> validate_number(:sub_total, greater_than_or_equal_to: 0)

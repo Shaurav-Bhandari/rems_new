@@ -13,14 +13,21 @@ defmodule BinduBackend.Kot.KotItem do
 
     belongs_to :kot, BinduBackend.Kot.Kot
     belongs_to :order_item, BinduBackend.Orders.OrderItem
-    belongs_to :status, BinduBackend.Flags.KotItemStatus, foreign_key: :status_id
+    # belongs_to :status, BinduBackend.Flags.KotItemStatus, foreign_key: :status_id
 
     timestamps(type: :utc_datetime)
   end
 
   def changeset(kot_item, attrs) do
     kot_item
-    |> cast(attrs, [:item_name, :quantity, :special_instructions, :kot_id, :order_item_id, :status_id])
+    |> cast(attrs, [
+      :item_name,
+      :quantity,
+      :special_instructions,
+      :kot_id,
+      :order_item_id,
+      :status_id
+    ])
     |> validate_required([:item_name, :quantity, :kot_id, :order_item_id, :status_id])
     |> validate_number(:quantity, greater_than: 0)
     |> foreign_key_constraint(:kot_id)

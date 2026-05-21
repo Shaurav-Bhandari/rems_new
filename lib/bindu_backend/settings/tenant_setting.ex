@@ -30,9 +30,21 @@ defmodule BinduBackend.Settings.TenantSetting do
 
   def changeset(setting, attrs) do
     setting
-    |> cast(attrs, [:key, :value, :domain, :data_type, :min_role_level, :required_permission,
-        :is_system_locked, :previous_value, :description, :validation_rule,
-        :default_value, :modified_at, :modified_by_id])
+    |> cast(attrs, [
+      :key,
+      :value,
+      :domain,
+      :data_type,
+      :min_role_level,
+      :required_permission,
+      :is_system_locked,
+      :previous_value,
+      :description,
+      :validation_rule,
+      :default_value,
+      :modified_at,
+      :modified_by_id
+    ])
     |> validate_required([:key, :value, :domain, :data_type, :modified_at, :modified_by_id])
     |> validate_inclusion(:domain, @valid_domains)
     |> validate_inclusion(:data_type, @valid_data_types)

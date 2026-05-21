@@ -9,7 +9,16 @@ defmodule BinduBackend.CustomersTest do
     import BinduBackend.AccountsFixtures, only: [user_scope_fixture: 0]
     import BinduBackend.CustomersFixtures
 
-    @invalid_attrs %{first_name: nil, last_name: nil, email: nil, contact_number: nil, total_orders: nil, loyalty_points: nil, total_spent: nil, is_active: nil}
+    @invalid_attrs %{
+      first_name: nil,
+      last_name: nil,
+      email: nil,
+      contact_number: nil,
+      total_orders: nil,
+      loyalty_points: nil,
+      total_spent: nil,
+      is_active: nil
+    }
 
     test "list_customers/1 returns all scoped customers" do
       scope = user_scope_fixture()
@@ -25,11 +34,24 @@ defmodule BinduBackend.CustomersTest do
       customer = customer_fixture(scope)
       other_scope = user_scope_fixture()
       assert Customers.get_customer!(scope, customer.id) == customer
-      assert_raise Ecto.NoResultsError, fn -> Customers.get_customer!(other_scope, customer.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Customers.get_customer!(other_scope, customer.id)
+      end
     end
 
     test "create_customer/2 with valid data creates a customer" do
-      valid_attrs = %{first_name: "some first_name", last_name: "some last_name", email: "some email", contact_number: "some contact_number", total_orders: 42, loyalty_points: 42, total_spent: 120.5, is_active: true}
+      valid_attrs = %{
+        first_name: "some first_name",
+        last_name: "some last_name",
+        email: "some email",
+        contact_number: "some contact_number",
+        total_orders: 42,
+        loyalty_points: 42,
+        total_spent: 120.5,
+        is_active: true
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %Customer{} = customer} = Customers.create_customer(scope, valid_attrs)
@@ -52,9 +74,21 @@ defmodule BinduBackend.CustomersTest do
     test "update_customer/3 with valid data updates the customer" do
       scope = user_scope_fixture()
       customer = customer_fixture(scope)
-      update_attrs = %{first_name: "some updated first_name", last_name: "some updated last_name", email: "some updated email", contact_number: "some updated contact_number", total_orders: 43, loyalty_points: 43, total_spent: 456.7, is_active: false}
 
-      assert {:ok, %Customer{} = customer} = Customers.update_customer(scope, customer, update_attrs)
+      update_attrs = %{
+        first_name: "some updated first_name",
+        last_name: "some updated last_name",
+        email: "some updated email",
+        contact_number: "some updated contact_number",
+        total_orders: 43,
+        loyalty_points: 43,
+        total_spent: 456.7,
+        is_active: false
+      }
+
+      assert {:ok, %Customer{} = customer} =
+               Customers.update_customer(scope, customer, update_attrs)
+
       assert customer.first_name == "some updated first_name"
       assert customer.last_name == "some updated last_name"
       assert customer.email == "some updated email"
@@ -78,7 +112,10 @@ defmodule BinduBackend.CustomersTest do
     test "update_customer/3 with invalid data returns error changeset" do
       scope = user_scope_fixture()
       customer = customer_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Customers.update_customer(scope, customer, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Customers.update_customer(scope, customer, @invalid_attrs)
+
       assert customer == Customers.get_customer!(scope, customer.id)
     end
 

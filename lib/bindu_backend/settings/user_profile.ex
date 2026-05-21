@@ -40,6 +40,7 @@ defmodule BinduBackend.Settings.UserProfile do
     field :notes, :string
 
     belongs_to :user, BinduBackend.Accounts.User
+
     belongs_to :elevation_granted_by, BinduBackend.Accounts.User,
       foreign_key: :elevation_granted_by_id
 
@@ -49,15 +50,35 @@ defmodule BinduBackend.Settings.UserProfile do
   def changeset(profile, attrs) do
     profile
     |> cast(attrs, [
-      :profile_type, :role_level, :employee_number, :department,
-      :job_title, :hire_date, :termination_date, :employment_status,
-      :hourly_rate, :monthly_salary, :commission_rate,
-      :shift_pattern, :default_shift, :weekly_hours,
-      :can_login_offsite, :requires_pin_for_actions, :manager_pin,
-      :temporary_elevation, :elevation_expires_at, :elevation_reason,
-      :elevation_granted_by_id, :total_orders_processed, :average_order_value,
-      :last_performance_review, :performance_rating,
-      :preferred_language, :notification_preferences, :notes, :user_id
+      :profile_type,
+      :role_level,
+      :employee_number,
+      :department,
+      :job_title,
+      :hire_date,
+      :termination_date,
+      :employment_status,
+      :hourly_rate,
+      :monthly_salary,
+      :commission_rate,
+      :shift_pattern,
+      :default_shift,
+      :weekly_hours,
+      :can_login_offsite,
+      :requires_pin_for_actions,
+      :manager_pin,
+      :temporary_elevation,
+      :elevation_expires_at,
+      :elevation_reason,
+      :elevation_granted_by_id,
+      :total_orders_processed,
+      :average_order_value,
+      :last_performance_review,
+      :performance_rating,
+      :preferred_language,
+      :notification_preferences,
+      :notes,
+      :user_id
     ])
     |> validate_required([:profile_type, :role_level, :user_id])
     |> validate_inclusion(:profile_type, @valid_profile_types)
@@ -73,7 +94,12 @@ defmodule BinduBackend.Settings.UserProfile do
 
   def elevation_changeset(profile, attrs) do
     profile
-    |> cast(attrs, [:temporary_elevation, :elevation_expires_at, :elevation_reason, :elevation_granted_by_id])
+    |> cast(attrs, [
+      :temporary_elevation,
+      :elevation_expires_at,
+      :elevation_reason,
+      :elevation_granted_by_id
+    ])
     |> validate_required([:elevation_expires_at, :elevation_granted_by_id])
   end
 

@@ -21,7 +21,15 @@ defmodule BinduBackend.Restaurant.TableReservation do
 
   def changeset(reservation, attrs) do
     reservation
-    |> cast(attrs, [:customer_name, :customer_contact, :reservation_time, :number_of_people, :notes, :restaurant_table_id, :status_id])
+    |> cast(attrs, [
+      :customer_name,
+      :customer_contact,
+      :reservation_time,
+      :number_of_people,
+      :notes,
+      :restaurant_table_id,
+      :status_id
+    ])
     |> validate_required([:reservation_time, :restaurant_table_id, :status_id])
     |> validate_number(:number_of_people, greater_than: 0)
     |> foreign_key_constraint(:restaurant_table_id)

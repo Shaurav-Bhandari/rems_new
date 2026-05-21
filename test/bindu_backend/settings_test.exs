@@ -8,7 +8,20 @@ defmodule BinduBackend.SettingsTest do
 
     import BinduBackend.SettingsFixtures
 
-    @invalid_attrs %{value: nil, domain: nil, description: nil, key: nil, data_type: nil, min_role_level: nil, required_permission: nil, is_system_locked: nil, previous_value: nil, validation_rule: nil, default_value: nil, modified_at: nil}
+    @invalid_attrs %{
+      value: nil,
+      domain: nil,
+      description: nil,
+      key: nil,
+      data_type: nil,
+      min_role_level: nil,
+      required_permission: nil,
+      is_system_locked: nil,
+      previous_value: nil,
+      validation_rule: nil,
+      default_value: nil,
+      modified_at: nil
+    }
 
     test "list_tenant_settings/0 returns all tenant_settings" do
       tenant_setting = tenant_setting_fixture()
@@ -21,9 +34,24 @@ defmodule BinduBackend.SettingsTest do
     end
 
     test "create_tenant_setting/1 with valid data creates a tenant_setting" do
-      valid_attrs = %{value: "some value", domain: "some domain", description: "some description", key: "some key", data_type: "some data_type", min_role_level: 42, required_permission: "some required_permission", is_system_locked: true, previous_value: "some previous_value", validation_rule: "some validation_rule", default_value: "some default_value", modified_at: ~U[2026-05-10 06:24:00Z]}
+      valid_attrs = %{
+        value: "some value",
+        domain: "some domain",
+        description: "some description",
+        key: "some key",
+        data_type: "some data_type",
+        min_role_level: 42,
+        required_permission: "some required_permission",
+        is_system_locked: true,
+        previous_value: "some previous_value",
+        validation_rule: "some validation_rule",
+        default_value: "some default_value",
+        modified_at: ~U[2026-05-10 06:24:00Z]
+      }
 
-      assert {:ok, %TenantSetting{} = tenant_setting} = Settings.create_tenant_setting(valid_attrs)
+      assert {:ok, %TenantSetting{} = tenant_setting} =
+               Settings.create_tenant_setting(valid_attrs)
+
       assert tenant_setting.value == "some value"
       assert tenant_setting.domain == "some domain"
       assert tenant_setting.description == "some description"
@@ -44,9 +72,25 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_tenant_setting/2 with valid data updates the tenant_setting" do
       tenant_setting = tenant_setting_fixture()
-      update_attrs = %{value: "some updated value", domain: "some updated domain", description: "some updated description", key: "some updated key", data_type: "some updated data_type", min_role_level: 43, required_permission: "some updated required_permission", is_system_locked: false, previous_value: "some updated previous_value", validation_rule: "some updated validation_rule", default_value: "some updated default_value", modified_at: ~U[2026-05-11 06:24:00Z]}
 
-      assert {:ok, %TenantSetting{} = tenant_setting} = Settings.update_tenant_setting(tenant_setting, update_attrs)
+      update_attrs = %{
+        value: "some updated value",
+        domain: "some updated domain",
+        description: "some updated description",
+        key: "some updated key",
+        data_type: "some updated data_type",
+        min_role_level: 43,
+        required_permission: "some updated required_permission",
+        is_system_locked: false,
+        previous_value: "some updated previous_value",
+        validation_rule: "some updated validation_rule",
+        default_value: "some updated default_value",
+        modified_at: ~U[2026-05-11 06:24:00Z]
+      }
+
+      assert {:ok, %TenantSetting{} = tenant_setting} =
+               Settings.update_tenant_setting(tenant_setting, update_attrs)
+
       assert tenant_setting.value == "some updated value"
       assert tenant_setting.domain == "some updated domain"
       assert tenant_setting.description == "some updated description"
@@ -63,7 +107,10 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_tenant_setting/2 with invalid data returns error changeset" do
       tenant_setting = tenant_setting_fixture()
-      assert {:error, %Ecto.Changeset{}} = Settings.update_tenant_setting(tenant_setting, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Settings.update_tenant_setting(tenant_setting, @invalid_attrs)
+
       assert tenant_setting == Settings.get_tenant_setting!(tenant_setting.id)
     end
 
@@ -84,7 +131,36 @@ defmodule BinduBackend.SettingsTest do
 
     import BinduBackend.SettingsFixtures
 
-    @invalid_attrs %{currency_code: nil, tax_registration_number: nil, service_charge_pct: nil, tax_inclusive_pricing: nil, default_tax_rate: nil, alcohol_tax_rate: nil, auto_kot_firing: nil, table_expiration_minutes: nil, stock_warning_threshold: nil, enable_happy_hour: nil, happy_hour_start: nil, happy_hour_end: nil, happy_hour_discount: nil, language_iso: nil, brand_primary_color: nil, brand_secondary_color: nil, logo_url: nil, receipt_header: nil, receipt_footer: nil, require_manager_pin_for_void: nil, require_manager_pin_for_discount: nil, max_discount_pct_staff: nil, max_discount_pct_manager: nil, offsite_login_allowed: nil, allowed_ip_ranges: nil, gdpr_enabled: nil, data_retention_days: nil, require_age_verification: nil}
+    @invalid_attrs %{
+      currency_code: nil,
+      tax_registration_number: nil,
+      service_charge_pct: nil,
+      tax_inclusive_pricing: nil,
+      default_tax_rate: nil,
+      alcohol_tax_rate: nil,
+      auto_kot_firing: nil,
+      table_expiration_minutes: nil,
+      stock_warning_threshold: nil,
+      enable_happy_hour: nil,
+      happy_hour_start: nil,
+      happy_hour_end: nil,
+      happy_hour_discount: nil,
+      language_iso: nil,
+      brand_primary_color: nil,
+      brand_secondary_color: nil,
+      logo_url: nil,
+      receipt_header: nil,
+      receipt_footer: nil,
+      require_manager_pin_for_void: nil,
+      require_manager_pin_for_discount: nil,
+      max_discount_pct_staff: nil,
+      max_discount_pct_manager: nil,
+      offsite_login_allowed: nil,
+      allowed_ip_ranges: nil,
+      gdpr_enabled: nil,
+      data_retention_days: nil,
+      require_age_verification: nil
+    }
 
     test "list_restaurant_profiles/0 returns all restaurant_profiles" do
       restaurant_profile = restaurant_profile_fixture()
@@ -97,9 +173,40 @@ defmodule BinduBackend.SettingsTest do
     end
 
     test "create_restaurant_profile/1 with valid data creates a restaurant_profile" do
-      valid_attrs = %{currency_code: "some currency_code", tax_registration_number: "some tax_registration_number", service_charge_pct: "120.5", tax_inclusive_pricing: true, default_tax_rate: "120.5", alcohol_tax_rate: "120.5", auto_kot_firing: true, table_expiration_minutes: 42, stock_warning_threshold: 42, enable_happy_hour: true, happy_hour_start: ~U[2026-05-10 06:24:00Z], happy_hour_end: ~U[2026-05-10 06:24:00Z], happy_hour_discount: "120.5", language_iso: "some language_iso", brand_primary_color: "some brand_primary_color", brand_secondary_color: "some brand_secondary_color", logo_url: "some logo_url", receipt_header: "some receipt_header", receipt_footer: "some receipt_footer", require_manager_pin_for_void: true, require_manager_pin_for_discount: true, max_discount_pct_staff: "120.5", max_discount_pct_manager: "120.5", offsite_login_allowed: true, allowed_ip_ranges: %{}, gdpr_enabled: true, data_retention_days: 42, require_age_verification: true}
+      valid_attrs = %{
+        currency_code: "some currency_code",
+        tax_registration_number: "some tax_registration_number",
+        service_charge_pct: "120.5",
+        tax_inclusive_pricing: true,
+        default_tax_rate: "120.5",
+        alcohol_tax_rate: "120.5",
+        auto_kot_firing: true,
+        table_expiration_minutes: 42,
+        stock_warning_threshold: 42,
+        enable_happy_hour: true,
+        happy_hour_start: ~U[2026-05-10 06:24:00Z],
+        happy_hour_end: ~U[2026-05-10 06:24:00Z],
+        happy_hour_discount: "120.5",
+        language_iso: "some language_iso",
+        brand_primary_color: "some brand_primary_color",
+        brand_secondary_color: "some brand_secondary_color",
+        logo_url: "some logo_url",
+        receipt_header: "some receipt_header",
+        receipt_footer: "some receipt_footer",
+        require_manager_pin_for_void: true,
+        require_manager_pin_for_discount: true,
+        max_discount_pct_staff: "120.5",
+        max_discount_pct_manager: "120.5",
+        offsite_login_allowed: true,
+        allowed_ip_ranges: %{},
+        gdpr_enabled: true,
+        data_retention_days: 42,
+        require_age_verification: true
+      }
 
-      assert {:ok, %RestaurantProfile{} = restaurant_profile} = Settings.create_restaurant_profile(valid_attrs)
+      assert {:ok, %RestaurantProfile{} = restaurant_profile} =
+               Settings.create_restaurant_profile(valid_attrs)
+
       assert restaurant_profile.currency_code == "some currency_code"
       assert restaurant_profile.tax_registration_number == "some tax_registration_number"
       assert restaurant_profile.service_charge_pct == Decimal.new("120.5")
@@ -136,9 +243,41 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_restaurant_profile/2 with valid data updates the restaurant_profile" do
       restaurant_profile = restaurant_profile_fixture()
-      update_attrs = %{currency_code: "some updated currency_code", tax_registration_number: "some updated tax_registration_number", service_charge_pct: "456.7", tax_inclusive_pricing: false, default_tax_rate: "456.7", alcohol_tax_rate: "456.7", auto_kot_firing: false, table_expiration_minutes: 43, stock_warning_threshold: 43, enable_happy_hour: false, happy_hour_start: ~U[2026-05-11 06:24:00Z], happy_hour_end: ~U[2026-05-11 06:24:00Z], happy_hour_discount: "456.7", language_iso: "some updated language_iso", brand_primary_color: "some updated brand_primary_color", brand_secondary_color: "some updated brand_secondary_color", logo_url: "some updated logo_url", receipt_header: "some updated receipt_header", receipt_footer: "some updated receipt_footer", require_manager_pin_for_void: false, require_manager_pin_for_discount: false, max_discount_pct_staff: "456.7", max_discount_pct_manager: "456.7", offsite_login_allowed: false, allowed_ip_ranges: %{}, gdpr_enabled: false, data_retention_days: 43, require_age_verification: false}
 
-      assert {:ok, %RestaurantProfile{} = restaurant_profile} = Settings.update_restaurant_profile(restaurant_profile, update_attrs)
+      update_attrs = %{
+        currency_code: "some updated currency_code",
+        tax_registration_number: "some updated tax_registration_number",
+        service_charge_pct: "456.7",
+        tax_inclusive_pricing: false,
+        default_tax_rate: "456.7",
+        alcohol_tax_rate: "456.7",
+        auto_kot_firing: false,
+        table_expiration_minutes: 43,
+        stock_warning_threshold: 43,
+        enable_happy_hour: false,
+        happy_hour_start: ~U[2026-05-11 06:24:00Z],
+        happy_hour_end: ~U[2026-05-11 06:24:00Z],
+        happy_hour_discount: "456.7",
+        language_iso: "some updated language_iso",
+        brand_primary_color: "some updated brand_primary_color",
+        brand_secondary_color: "some updated brand_secondary_color",
+        logo_url: "some updated logo_url",
+        receipt_header: "some updated receipt_header",
+        receipt_footer: "some updated receipt_footer",
+        require_manager_pin_for_void: false,
+        require_manager_pin_for_discount: false,
+        max_discount_pct_staff: "456.7",
+        max_discount_pct_manager: "456.7",
+        offsite_login_allowed: false,
+        allowed_ip_ranges: %{},
+        gdpr_enabled: false,
+        data_retention_days: 43,
+        require_age_verification: false
+      }
+
+      assert {:ok, %RestaurantProfile{} = restaurant_profile} =
+               Settings.update_restaurant_profile(restaurant_profile, update_attrs)
+
       assert restaurant_profile.currency_code == "some updated currency_code"
       assert restaurant_profile.tax_registration_number == "some updated tax_registration_number"
       assert restaurant_profile.service_charge_pct == Decimal.new("456.7")
@@ -171,14 +310,20 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_restaurant_profile/2 with invalid data returns error changeset" do
       restaurant_profile = restaurant_profile_fixture()
-      assert {:error, %Ecto.Changeset{}} = Settings.update_restaurant_profile(restaurant_profile, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Settings.update_restaurant_profile(restaurant_profile, @invalid_attrs)
+
       assert restaurant_profile == Settings.get_restaurant_profile!(restaurant_profile.id)
     end
 
     test "delete_restaurant_profile/1 deletes the restaurant_profile" do
       restaurant_profile = restaurant_profile_fixture()
       assert {:ok, %RestaurantProfile{}} = Settings.delete_restaurant_profile(restaurant_profile)
-      assert_raise Ecto.NoResultsError, fn -> Settings.get_restaurant_profile!(restaurant_profile.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Settings.get_restaurant_profile!(restaurant_profile.id)
+      end
     end
 
     test "change_restaurant_profile/1 returns a restaurant_profile changeset" do
@@ -192,7 +337,35 @@ defmodule BinduBackend.SettingsTest do
 
     import BinduBackend.SettingsFixtures
 
-    @invalid_attrs %{profile_type: nil, role_level: nil, employee_number: nil, department: nil, job_title: nil, hire_date: nil, termination_date: nil, employment_status: nil, hourly_rate: nil, monthly_salary: nil, commission_rate: nil, shift_pattern: nil, default_shift: nil, weekly_hours: nil, can_login_offsite: nil, requires_pin_for_actions: nil, manager_pin: nil, temporary_elevation: nil, elevation_expires_at: nil, elevation_reason: nil, total_orders_processed: nil, average_order_value: nil, last_performance_review: nil, performance_rating: nil, preferred_language: nil, notification_preferences: nil, notes: nil}
+    @invalid_attrs %{
+      profile_type: nil,
+      role_level: nil,
+      employee_number: nil,
+      department: nil,
+      job_title: nil,
+      hire_date: nil,
+      termination_date: nil,
+      employment_status: nil,
+      hourly_rate: nil,
+      monthly_salary: nil,
+      commission_rate: nil,
+      shift_pattern: nil,
+      default_shift: nil,
+      weekly_hours: nil,
+      can_login_offsite: nil,
+      requires_pin_for_actions: nil,
+      manager_pin: nil,
+      temporary_elevation: nil,
+      elevation_expires_at: nil,
+      elevation_reason: nil,
+      total_orders_processed: nil,
+      average_order_value: nil,
+      last_performance_review: nil,
+      performance_rating: nil,
+      preferred_language: nil,
+      notification_preferences: nil,
+      notes: nil
+    }
 
     test "list_user_profiles/0 returns all user_profiles" do
       user_profile = user_profile_fixture()
@@ -205,7 +378,35 @@ defmodule BinduBackend.SettingsTest do
     end
 
     test "create_user_profile/1 with valid data creates a user_profile" do
-      valid_attrs = %{profile_type: "some profile_type", role_level: 42, employee_number: "some employee_number", department: "some department", job_title: "some job_title", hire_date: ~D[2026-05-10], termination_date: ~D[2026-05-10], employment_status: "some employment_status", hourly_rate: "120.5", monthly_salary: "120.5", commission_rate: "120.5", shift_pattern: "some shift_pattern", default_shift: "some default_shift", weekly_hours: 42, can_login_offsite: true, requires_pin_for_actions: true, manager_pin: "some manager_pin", temporary_elevation: true, elevation_expires_at: ~U[2026-05-10 06:24:00Z], elevation_reason: "some elevation_reason", total_orders_processed: 42, average_order_value: "120.5", last_performance_review: ~U[2026-05-10 06:24:00Z], performance_rating: "120.5", preferred_language: "some preferred_language", notification_preferences: %{}, notes: "some notes"}
+      valid_attrs = %{
+        profile_type: "some profile_type",
+        role_level: 42,
+        employee_number: "some employee_number",
+        department: "some department",
+        job_title: "some job_title",
+        hire_date: ~D[2026-05-10],
+        termination_date: ~D[2026-05-10],
+        employment_status: "some employment_status",
+        hourly_rate: "120.5",
+        monthly_salary: "120.5",
+        commission_rate: "120.5",
+        shift_pattern: "some shift_pattern",
+        default_shift: "some default_shift",
+        weekly_hours: 42,
+        can_login_offsite: true,
+        requires_pin_for_actions: true,
+        manager_pin: "some manager_pin",
+        temporary_elevation: true,
+        elevation_expires_at: ~U[2026-05-10 06:24:00Z],
+        elevation_reason: "some elevation_reason",
+        total_orders_processed: 42,
+        average_order_value: "120.5",
+        last_performance_review: ~U[2026-05-10 06:24:00Z],
+        performance_rating: "120.5",
+        preferred_language: "some preferred_language",
+        notification_preferences: %{},
+        notes: "some notes"
+      }
 
       assert {:ok, %UserProfile{} = user_profile} = Settings.create_user_profile(valid_attrs)
       assert user_profile.profile_type == "some profile_type"
@@ -243,9 +444,40 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_user_profile/2 with valid data updates the user_profile" do
       user_profile = user_profile_fixture()
-      update_attrs = %{profile_type: "some updated profile_type", role_level: 43, employee_number: "some updated employee_number", department: "some updated department", job_title: "some updated job_title", hire_date: ~D[2026-05-11], termination_date: ~D[2026-05-11], employment_status: "some updated employment_status", hourly_rate: "456.7", monthly_salary: "456.7", commission_rate: "456.7", shift_pattern: "some updated shift_pattern", default_shift: "some updated default_shift", weekly_hours: 43, can_login_offsite: false, requires_pin_for_actions: false, manager_pin: "some updated manager_pin", temporary_elevation: false, elevation_expires_at: ~U[2026-05-11 06:24:00Z], elevation_reason: "some updated elevation_reason", total_orders_processed: 43, average_order_value: "456.7", last_performance_review: ~U[2026-05-11 06:24:00Z], performance_rating: "456.7", preferred_language: "some updated preferred_language", notification_preferences: %{}, notes: "some updated notes"}
 
-      assert {:ok, %UserProfile{} = user_profile} = Settings.update_user_profile(user_profile, update_attrs)
+      update_attrs = %{
+        profile_type: "some updated profile_type",
+        role_level: 43,
+        employee_number: "some updated employee_number",
+        department: "some updated department",
+        job_title: "some updated job_title",
+        hire_date: ~D[2026-05-11],
+        termination_date: ~D[2026-05-11],
+        employment_status: "some updated employment_status",
+        hourly_rate: "456.7",
+        monthly_salary: "456.7",
+        commission_rate: "456.7",
+        shift_pattern: "some updated shift_pattern",
+        default_shift: "some updated default_shift",
+        weekly_hours: 43,
+        can_login_offsite: false,
+        requires_pin_for_actions: false,
+        manager_pin: "some updated manager_pin",
+        temporary_elevation: false,
+        elevation_expires_at: ~U[2026-05-11 06:24:00Z],
+        elevation_reason: "some updated elevation_reason",
+        total_orders_processed: 43,
+        average_order_value: "456.7",
+        last_performance_review: ~U[2026-05-11 06:24:00Z],
+        performance_rating: "456.7",
+        preferred_language: "some updated preferred_language",
+        notification_preferences: %{},
+        notes: "some updated notes"
+      }
+
+      assert {:ok, %UserProfile{} = user_profile} =
+               Settings.update_user_profile(user_profile, update_attrs)
+
       assert user_profile.profile_type == "some updated profile_type"
       assert user_profile.role_level == 43
       assert user_profile.employee_number == "some updated employee_number"
@@ -277,7 +509,10 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_user_profile/2 with invalid data returns error changeset" do
       user_profile = user_profile_fixture()
-      assert {:error, %Ecto.Changeset{}} = Settings.update_user_profile(user_profile, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Settings.update_user_profile(user_profile, @invalid_attrs)
+
       assert user_profile == Settings.get_user_profile!(user_profile.id)
     end
 
@@ -298,7 +533,18 @@ defmodule BinduBackend.SettingsTest do
 
     import BinduBackend.SettingsFixtures
 
-    @invalid_attrs %{priority: nil, reason: nil, value: nil, key: nil, min_role_level: nil, required_permission: nil, inherit_from_parent: nil, active_from: nil, active_until: nil, days_of_week: nil}
+    @invalid_attrs %{
+      priority: nil,
+      reason: nil,
+      value: nil,
+      key: nil,
+      min_role_level: nil,
+      required_permission: nil,
+      inherit_from_parent: nil,
+      active_from: nil,
+      active_until: nil,
+      days_of_week: nil
+    }
 
     test "list_setting_overrides/0 returns all setting_overrides" do
       setting_override = setting_override_fixture()
@@ -311,9 +557,22 @@ defmodule BinduBackend.SettingsTest do
     end
 
     test "create_setting_override/1 with valid data creates a setting_override" do
-      valid_attrs = %{priority: 42, reason: "some reason", value: "some value", key: "some key", min_role_level: 42, required_permission: "some required_permission", inherit_from_parent: true, active_from: ~U[2026-05-10 06:24:00Z], active_until: ~U[2026-05-10 06:24:00Z], days_of_week: %{}}
+      valid_attrs = %{
+        priority: 42,
+        reason: "some reason",
+        value: "some value",
+        key: "some key",
+        min_role_level: 42,
+        required_permission: "some required_permission",
+        inherit_from_parent: true,
+        active_from: ~U[2026-05-10 06:24:00Z],
+        active_until: ~U[2026-05-10 06:24:00Z],
+        days_of_week: %{}
+      }
 
-      assert {:ok, %SettingOverride{} = setting_override} = Settings.create_setting_override(valid_attrs)
+      assert {:ok, %SettingOverride{} = setting_override} =
+               Settings.create_setting_override(valid_attrs)
+
       assert setting_override.priority == 42
       assert setting_override.reason == "some reason"
       assert setting_override.value == "some value"
@@ -332,9 +591,23 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_setting_override/2 with valid data updates the setting_override" do
       setting_override = setting_override_fixture()
-      update_attrs = %{priority: 43, reason: "some updated reason", value: "some updated value", key: "some updated key", min_role_level: 43, required_permission: "some updated required_permission", inherit_from_parent: false, active_from: ~U[2026-05-11 06:24:00Z], active_until: ~U[2026-05-11 06:24:00Z], days_of_week: %{}}
 
-      assert {:ok, %SettingOverride{} = setting_override} = Settings.update_setting_override(setting_override, update_attrs)
+      update_attrs = %{
+        priority: 43,
+        reason: "some updated reason",
+        value: "some updated value",
+        key: "some updated key",
+        min_role_level: 43,
+        required_permission: "some updated required_permission",
+        inherit_from_parent: false,
+        active_from: ~U[2026-05-11 06:24:00Z],
+        active_until: ~U[2026-05-11 06:24:00Z],
+        days_of_week: %{}
+      }
+
+      assert {:ok, %SettingOverride{} = setting_override} =
+               Settings.update_setting_override(setting_override, update_attrs)
+
       assert setting_override.priority == 43
       assert setting_override.reason == "some updated reason"
       assert setting_override.value == "some updated value"
@@ -349,14 +622,20 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_setting_override/2 with invalid data returns error changeset" do
       setting_override = setting_override_fixture()
-      assert {:error, %Ecto.Changeset{}} = Settings.update_setting_override(setting_override, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Settings.update_setting_override(setting_override, @invalid_attrs)
+
       assert setting_override == Settings.get_setting_override!(setting_override.id)
     end
 
     test "delete_setting_override/1 deletes the setting_override" do
       setting_override = setting_override_fixture()
       assert {:ok, %SettingOverride{}} = Settings.delete_setting_override(setting_override)
-      assert_raise Ecto.NoResultsError, fn -> Settings.get_setting_override!(setting_override.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Settings.get_setting_override!(setting_override.id)
+      end
     end
 
     test "change_setting_override/1 returns a setting_override changeset" do
@@ -370,7 +649,17 @@ defmodule BinduBackend.SettingsTest do
 
     import BinduBackend.SettingsFixtures
 
-    @invalid_attrs %{is_used: nil, token_hash: nil, permission: nil, expires_at: nil, used_at: nil, request_reason: nil, discount_amount: nil, ip_address: nil, device_id: nil}
+    @invalid_attrs %{
+      is_used: nil,
+      token_hash: nil,
+      permission: nil,
+      expires_at: nil,
+      used_at: nil,
+      request_reason: nil,
+      discount_amount: nil,
+      ip_address: nil,
+      device_id: nil
+    }
 
     test "list_elevation_tokens/0 returns all elevation_tokens" do
       elevation_token = elevation_token_fixture()
@@ -383,9 +672,21 @@ defmodule BinduBackend.SettingsTest do
     end
 
     test "create_elevation_token/1 with valid data creates a elevation_token" do
-      valid_attrs = %{is_used: true, token_hash: "some token_hash", permission: "some permission", expires_at: ~U[2026-05-10 06:24:00Z], used_at: ~U[2026-05-10 06:24:00Z], request_reason: "some request_reason", discount_amount: "120.5", ip_address: "some ip_address", device_id: "some device_id"}
+      valid_attrs = %{
+        is_used: true,
+        token_hash: "some token_hash",
+        permission: "some permission",
+        expires_at: ~U[2026-05-10 06:24:00Z],
+        used_at: ~U[2026-05-10 06:24:00Z],
+        request_reason: "some request_reason",
+        discount_amount: "120.5",
+        ip_address: "some ip_address",
+        device_id: "some device_id"
+      }
 
-      assert {:ok, %ElevationToken{} = elevation_token} = Settings.create_elevation_token(valid_attrs)
+      assert {:ok, %ElevationToken{} = elevation_token} =
+               Settings.create_elevation_token(valid_attrs)
+
       assert elevation_token.is_used == true
       assert elevation_token.token_hash == "some token_hash"
       assert elevation_token.permission == "some permission"
@@ -403,9 +704,22 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_elevation_token/2 with valid data updates the elevation_token" do
       elevation_token = elevation_token_fixture()
-      update_attrs = %{is_used: false, token_hash: "some updated token_hash", permission: "some updated permission", expires_at: ~U[2026-05-11 06:24:00Z], used_at: ~U[2026-05-11 06:24:00Z], request_reason: "some updated request_reason", discount_amount: "456.7", ip_address: "some updated ip_address", device_id: "some updated device_id"}
 
-      assert {:ok, %ElevationToken{} = elevation_token} = Settings.update_elevation_token(elevation_token, update_attrs)
+      update_attrs = %{
+        is_used: false,
+        token_hash: "some updated token_hash",
+        permission: "some updated permission",
+        expires_at: ~U[2026-05-11 06:24:00Z],
+        used_at: ~U[2026-05-11 06:24:00Z],
+        request_reason: "some updated request_reason",
+        discount_amount: "456.7",
+        ip_address: "some updated ip_address",
+        device_id: "some updated device_id"
+      }
+
+      assert {:ok, %ElevationToken{} = elevation_token} =
+               Settings.update_elevation_token(elevation_token, update_attrs)
+
       assert elevation_token.is_used == false
       assert elevation_token.token_hash == "some updated token_hash"
       assert elevation_token.permission == "some updated permission"
@@ -419,14 +733,20 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_elevation_token/2 with invalid data returns error changeset" do
       elevation_token = elevation_token_fixture()
-      assert {:error, %Ecto.Changeset{}} = Settings.update_elevation_token(elevation_token, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Settings.update_elevation_token(elevation_token, @invalid_attrs)
+
       assert elevation_token == Settings.get_elevation_token!(elevation_token.id)
     end
 
     test "delete_elevation_token/1 deletes the elevation_token" do
       elevation_token = elevation_token_fixture()
       assert {:ok, %ElevationToken{}} = Settings.delete_elevation_token(elevation_token)
-      assert_raise Ecto.NoResultsError, fn -> Settings.get_elevation_token!(elevation_token.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Settings.get_elevation_token!(elevation_token.id)
+      end
     end
 
     test "change_elevation_token/1 returns a elevation_token changeset" do
@@ -440,7 +760,20 @@ defmodule BinduBackend.SettingsTest do
 
     import BinduBackend.SettingsFixtures
 
-    @invalid_attrs %{reason: nil, domain: nil, new_value: nil, setting_key: nil, old_value: nil, changed_at: nil, ip_address: nil, user_agent: nil, role_level: nil, was_elevated: nil, required_approval: nil, approved_at: nil}
+    @invalid_attrs %{
+      reason: nil,
+      domain: nil,
+      new_value: nil,
+      setting_key: nil,
+      old_value: nil,
+      changed_at: nil,
+      ip_address: nil,
+      user_agent: nil,
+      role_level: nil,
+      was_elevated: nil,
+      required_approval: nil,
+      approved_at: nil
+    }
 
     test "list_setting_audit_logs/0 returns all setting_audit_logs" do
       setting_audit_log = setting_audit_log_fixture()
@@ -453,9 +786,24 @@ defmodule BinduBackend.SettingsTest do
     end
 
     test "create_setting_audit_log/1 with valid data creates a setting_audit_log" do
-      valid_attrs = %{reason: "some reason", domain: "some domain", new_value: "some new_value", setting_key: "some setting_key", old_value: "some old_value", changed_at: ~U[2026-05-10 06:24:00Z], ip_address: "some ip_address", user_agent: "some user_agent", role_level: 42, was_elevated: true, required_approval: true, approved_at: ~U[2026-05-10 06:24:00Z]}
+      valid_attrs = %{
+        reason: "some reason",
+        domain: "some domain",
+        new_value: "some new_value",
+        setting_key: "some setting_key",
+        old_value: "some old_value",
+        changed_at: ~U[2026-05-10 06:24:00Z],
+        ip_address: "some ip_address",
+        user_agent: "some user_agent",
+        role_level: 42,
+        was_elevated: true,
+        required_approval: true,
+        approved_at: ~U[2026-05-10 06:24:00Z]
+      }
 
-      assert {:ok, %SettingAuditLog{} = setting_audit_log} = Settings.create_setting_audit_log(valid_attrs)
+      assert {:ok, %SettingAuditLog{} = setting_audit_log} =
+               Settings.create_setting_audit_log(valid_attrs)
+
       assert setting_audit_log.reason == "some reason"
       assert setting_audit_log.domain == "some domain"
       assert setting_audit_log.new_value == "some new_value"
@@ -476,9 +824,25 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_setting_audit_log/2 with valid data updates the setting_audit_log" do
       setting_audit_log = setting_audit_log_fixture()
-      update_attrs = %{reason: "some updated reason", domain: "some updated domain", new_value: "some updated new_value", setting_key: "some updated setting_key", old_value: "some updated old_value", changed_at: ~U[2026-05-11 06:24:00Z], ip_address: "some updated ip_address", user_agent: "some updated user_agent", role_level: 43, was_elevated: false, required_approval: false, approved_at: ~U[2026-05-11 06:24:00Z]}
 
-      assert {:ok, %SettingAuditLog{} = setting_audit_log} = Settings.update_setting_audit_log(setting_audit_log, update_attrs)
+      update_attrs = %{
+        reason: "some updated reason",
+        domain: "some updated domain",
+        new_value: "some updated new_value",
+        setting_key: "some updated setting_key",
+        old_value: "some updated old_value",
+        changed_at: ~U[2026-05-11 06:24:00Z],
+        ip_address: "some updated ip_address",
+        user_agent: "some updated user_agent",
+        role_level: 43,
+        was_elevated: false,
+        required_approval: false,
+        approved_at: ~U[2026-05-11 06:24:00Z]
+      }
+
+      assert {:ok, %SettingAuditLog{} = setting_audit_log} =
+               Settings.update_setting_audit_log(setting_audit_log, update_attrs)
+
       assert setting_audit_log.reason == "some updated reason"
       assert setting_audit_log.domain == "some updated domain"
       assert setting_audit_log.new_value == "some updated new_value"
@@ -495,14 +859,20 @@ defmodule BinduBackend.SettingsTest do
 
     test "update_setting_audit_log/2 with invalid data returns error changeset" do
       setting_audit_log = setting_audit_log_fixture()
-      assert {:error, %Ecto.Changeset{}} = Settings.update_setting_audit_log(setting_audit_log, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Settings.update_setting_audit_log(setting_audit_log, @invalid_attrs)
+
       assert setting_audit_log == Settings.get_setting_audit_log!(setting_audit_log.id)
     end
 
     test "delete_setting_audit_log/1 deletes the setting_audit_log" do
       setting_audit_log = setting_audit_log_fixture()
       assert {:ok, %SettingAuditLog{}} = Settings.delete_setting_audit_log(setting_audit_log)
-      assert_raise Ecto.NoResultsError, fn -> Settings.get_setting_audit_log!(setting_audit_log.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Settings.get_setting_audit_log!(setting_audit_log.id)
+      end
     end
 
     test "change_setting_audit_log/1 returns a setting_audit_log changeset" do

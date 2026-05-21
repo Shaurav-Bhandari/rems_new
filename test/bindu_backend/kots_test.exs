@@ -9,7 +9,17 @@ defmodule BinduBackend.KotsTest do
     import BinduBackend.AccountsFixtures, only: [user_scope_fixture: 0]
     import BinduBackend.KotsFixtures
 
-    @invalid_attrs %{status: nil, kot_number: nil, sequence_number: nil, order_number: nil, table_number: nil, customer_name: nil, order_type: nil, guest_count: nil, print_count: nil}
+    @invalid_attrs %{
+      status: nil,
+      kot_number: nil,
+      sequence_number: nil,
+      order_number: nil,
+      table_number: nil,
+      customer_name: nil,
+      order_type: nil,
+      guest_count: nil,
+      print_count: nil
+    }
 
     test "list_kots/1 returns all scoped kots" do
       scope = user_scope_fixture()
@@ -29,7 +39,18 @@ defmodule BinduBackend.KotsTest do
     end
 
     test "create_kot/2 with valid data creates a kot" do
-      valid_attrs = %{status: true, kot_number: "some kot_number", sequence_number: 42, order_number: "some order_number", table_number: 42, customer_name: "some customer_name", order_type: "some order_type", guest_count: 42, print_count: 42}
+      valid_attrs = %{
+        status: true,
+        kot_number: "some kot_number",
+        sequence_number: 42,
+        order_number: "some order_number",
+        table_number: 42,
+        customer_name: "some customer_name",
+        order_type: "some order_type",
+        guest_count: 42,
+        print_count: 42
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %Kot{} = kot} = Kots.create_kot(scope, valid_attrs)
@@ -53,7 +74,18 @@ defmodule BinduBackend.KotsTest do
     test "update_kot/3 with valid data updates the kot" do
       scope = user_scope_fixture()
       kot = kot_fixture(scope)
-      update_attrs = %{status: false, kot_number: "some updated kot_number", sequence_number: 43, order_number: "some updated order_number", table_number: 43, customer_name: "some updated customer_name", order_type: "some updated order_type", guest_count: 43, print_count: 43}
+
+      update_attrs = %{
+        status: false,
+        kot_number: "some updated kot_number",
+        sequence_number: 43,
+        order_number: "some updated order_number",
+        table_number: 43,
+        customer_name: "some updated customer_name",
+        order_type: "some updated order_type",
+        guest_count: 43,
+        print_count: 43
+      }
 
       assert {:ok, %Kot{} = kot} = Kots.update_kot(scope, kot, update_attrs)
       assert kot.status == false

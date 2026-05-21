@@ -29,7 +29,13 @@ defmodule BinduBackend.SeatingsTest do
     end
 
     test "create_floor/2 with valid data creates a floor" do
-      valid_attrs = %{code: "some code", name: "some name", description: "some description", display_order: 42}
+      valid_attrs = %{
+        code: "some code",
+        name: "some name",
+        description: "some description",
+        display_order: 42
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %Floor{} = floor} = Seatings.create_floor(scope, valid_attrs)
@@ -48,7 +54,13 @@ defmodule BinduBackend.SeatingsTest do
     test "update_floor/3 with valid data updates the floor" do
       scope = user_scope_fixture()
       floor = floor_fixture(scope)
-      update_attrs = %{code: "some updated code", name: "some updated name", description: "some updated description", display_order: 43}
+
+      update_attrs = %{
+        code: "some updated code",
+        name: "some updated name",
+        description: "some updated description",
+        display_order: 43
+      }
 
       assert {:ok, %Floor{} = floor} = Seatings.update_floor(scope, floor, update_attrs)
       assert floor.code == "some updated code"

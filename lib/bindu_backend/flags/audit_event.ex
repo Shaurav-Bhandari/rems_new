@@ -1,6 +1,5 @@
 # lib/bindu_backend/flags/audit_event.ex
 defmodule BinduBackend.Flags.AuditEvent do
-  alias ElixirLS.LanguageServer.Plugins.Ecto
   use Ecto.Schema
   import Ecto.Changeset
 

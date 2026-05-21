@@ -15,7 +15,7 @@ defmodule BinduBackend.Accounts.User do
     field :hashed_password, :string, redact: true
     field :is_active, :boolean, default: true
     field :is_deleted, :boolean, default: false
-    field :is_email_verified, :boolean, default: false, null: false
+    field :is_email_verified, :boolean, default: false
 
     field :failed_login_attempts, :integer, default: 0
     field :locked_until, :utc_datetime
@@ -24,10 +24,11 @@ defmodule BinduBackend.Accounts.User do
     field :deleted_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
 
-    many_to_many :roles, BinduBackend.RBAC.Role, join_through: "user_roles", on_replace: :delete
+    # many_to_many :roles, BinduBackend.RBAC.Role, join_through: "user_roles", on_replace: :delete
     has_many :notifications, BinduBackend.Notifications.Notification, foreign_key: :user_id
-    has_many :webhook_integrations, BinduBackend.Webhooks.WebhookIntegration, foreign_key: :user_id
-    has_many :sessions, BinduBackend.Accounts.Session, foreign_key: :user_id
+
+    # has_many :webhook_integrations, BinduBackend.Webhooks.WebhookIntegration, foreign_key: :user_id
+    # has_many :sessions, BinduBackend.Accounts.Session, foreign_key: :user_id
     # has_many :audit_logs, BinduBackend.AuditLogs.AuditLog, foreign_key: :user_id
 
     timestamps(type: :utc_datetime)

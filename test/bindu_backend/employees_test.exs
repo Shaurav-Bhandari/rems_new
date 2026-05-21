@@ -9,7 +9,16 @@ defmodule BinduBackend.EmployeesTest do
     import BinduBackend.AccountsFixtures, only: [user_scope_fixture: 0]
     import BinduBackend.EmployeesFixtures
 
-    @invalid_attrs %{position: nil, first_name: nil, last_name: nil, email: nil, phone: nil, department: nil, rate: nil, is_active: nil}
+    @invalid_attrs %{
+      position: nil,
+      first_name: nil,
+      last_name: nil,
+      email: nil,
+      phone: nil,
+      department: nil,
+      rate: nil,
+      is_active: nil
+    }
 
     test "list_emnployee/1 returns all scoped emnployee" do
       scope = user_scope_fixture()
@@ -25,11 +34,24 @@ defmodule BinduBackend.EmployeesTest do
       employee = employee_fixture(scope)
       other_scope = user_scope_fixture()
       assert Employees.get_employee!(scope, employee.id) == employee
-      assert_raise Ecto.NoResultsError, fn -> Employees.get_employee!(other_scope, employee.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Employees.get_employee!(other_scope, employee.id)
+      end
     end
 
     test "create_employee/2 with valid data creates a employee" do
-      valid_attrs = %{position: "some position", first_name: "some first_name", last_name: "some last_name", email: "some email", phone: "some phone", department: "some department", rate: 120.5, is_active: true}
+      valid_attrs = %{
+        position: "some position",
+        first_name: "some first_name",
+        last_name: "some last_name",
+        email: "some email",
+        phone: "some phone",
+        department: "some department",
+        rate: 120.5,
+        is_active: true
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %Employee{} = employee} = Employees.create_employee(scope, valid_attrs)
@@ -52,9 +74,21 @@ defmodule BinduBackend.EmployeesTest do
     test "update_employee/3 with valid data updates the employee" do
       scope = user_scope_fixture()
       employee = employee_fixture(scope)
-      update_attrs = %{position: "some updated position", first_name: "some updated first_name", last_name: "some updated last_name", email: "some updated email", phone: "some updated phone", department: "some updated department", rate: 456.7, is_active: false}
 
-      assert {:ok, %Employee{} = employee} = Employees.update_employee(scope, employee, update_attrs)
+      update_attrs = %{
+        position: "some updated position",
+        first_name: "some updated first_name",
+        last_name: "some updated last_name",
+        email: "some updated email",
+        phone: "some updated phone",
+        department: "some updated department",
+        rate: 456.7,
+        is_active: false
+      }
+
+      assert {:ok, %Employee{} = employee} =
+               Employees.update_employee(scope, employee, update_attrs)
+
       assert employee.position == "some updated position"
       assert employee.first_name == "some updated first_name"
       assert employee.last_name == "some updated last_name"
@@ -78,7 +112,10 @@ defmodule BinduBackend.EmployeesTest do
     test "update_employee/3 with invalid data returns error changeset" do
       scope = user_scope_fixture()
       employee = employee_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Employees.update_employee(scope, employee, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Employees.update_employee(scope, employee, @invalid_attrs)
+
       assert employee == Employees.get_employee!(scope, employee.id)
     end
 

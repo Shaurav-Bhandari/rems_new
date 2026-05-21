@@ -21,9 +21,13 @@ defmodule BinduBackend.Employees.EmployeeExpense do
   def changeset(expense, attrs) do
     expense
     |> cast(attrs, [
-      :amount, :expense_type, :description,
-      :expense_date, :is_approved,
-      :employee_id, :approved_by_id
+      :amount,
+      :expense_type,
+      :description,
+      :expense_date,
+      :is_approved,
+      :employee_id,
+      :approved_by_id
     ])
     |> validate_required([:amount, :expense_type, :expense_date, :employee_id])
     |> validate_number(:amount, greater_than: 0)

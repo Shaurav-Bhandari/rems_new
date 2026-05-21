@@ -25,11 +25,21 @@ defmodule BinduBackend.FlagsTest do
       table_status = table_status_fixture(scope)
       other_scope = user_scope_fixture()
       assert Flags.get_table_status!(scope, table_status.id) == table_status
-      assert_raise Ecto.NoResultsError, fn -> Flags.get_table_status!(other_scope, table_status.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Flags.get_table_status!(other_scope, table_status.id)
+      end
     end
 
     test "create_table_status/2 with valid data creates a table_status" do
-      valid_attrs = %{name: "some name", description: "some description", is_default: true, is_system: true, is_active: true}
+      valid_attrs = %{
+        name: "some name",
+        description: "some description",
+        is_default: true,
+        is_system: true,
+        is_active: true
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %TableStatus{} = table_status} = Flags.create_table_status(scope, valid_attrs)
@@ -49,9 +59,18 @@ defmodule BinduBackend.FlagsTest do
     test "update_table_status/3 with valid data updates the table_status" do
       scope = user_scope_fixture()
       table_status = table_status_fixture(scope)
-      update_attrs = %{name: "some updated name", description: "some updated description", is_default: false, is_system: false, is_active: false}
 
-      assert {:ok, %TableStatus{} = table_status} = Flags.update_table_status(scope, table_status, update_attrs)
+      update_attrs = %{
+        name: "some updated name",
+        description: "some updated description",
+        is_default: false,
+        is_system: false,
+        is_active: false
+      }
+
+      assert {:ok, %TableStatus{} = table_status} =
+               Flags.update_table_status(scope, table_status, update_attrs)
+
       assert table_status.name == "some updated name"
       assert table_status.description == "some updated description"
       assert table_status.is_default == false
@@ -72,7 +91,10 @@ defmodule BinduBackend.FlagsTest do
     test "update_table_status/3 with invalid data returns error changeset" do
       scope = user_scope_fixture()
       table_status = table_status_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Flags.update_table_status(scope, table_status, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Flags.update_table_status(scope, table_status, @invalid_attrs)
+
       assert table_status == Flags.get_table_status!(scope, table_status.id)
     end
 

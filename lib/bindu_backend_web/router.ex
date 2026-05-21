@@ -1,6 +1,8 @@
 defmodule BinduBackendWeb.Router do
   use BinduBackendWeb, :router
 
+  import BinduBackendWeb.SuperAdminAuth
+
   import BinduBackendWeb.UserAuth
 
   pipeline :browser do
@@ -10,6 +12,7 @@ defmodule BinduBackendWeb.Router do
     plug :put_root_layout, html: {BinduBackendWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_scope_for_super_admin
     plug :fetch_current_scope_for_user
   end
 
@@ -71,5 +74,33 @@ defmodule BinduBackendWeb.Router do
 
     post "/users/log-in", UserSessionController, :create
     delete "/users/log-out", UserSessionController, :delete
+  end
+
+  ## Authentication routes
+
+  scope "/", BinduBackendWeb do
+    pipe_through [:browser, :require_authenticated_super_admin]
+
+    live_session :require_authenticated_super_admin,
+      on_mount: [{BinduBackendWeb.SuperAdminAuth, :require_authenticated}] do
+      live "/super_admins/settings", SuperAdminLive.Settings, :edit
+      live "/super_admins/settings/confirm-email/:token", SuperAdminLive.Settings, :confirm_email
+    end
+
+    post "/super_admins/update-password", SuperAdminSessionController, :update_password
+  end
+
+  scope "/", BinduBackendWeb do
+    pipe_through [:browser]
+
+    live_session :current_super_admin,
+      on_mount: [{BinduBackendWeb.SuperAdminAuth, :mount_current_scope}] do
+      live "/super_admins/register", SuperAdminLive.Registration, :new
+      live "/super_admins/log-in", SuperAdminLive.Login, :new
+      live "/super_admins/log-in/:token", SuperAdminLive.Confirmation, :new
+    end
+
+    post "/super_admins/log-in", SuperAdminSessionController, :create
+    delete "/super_admins/log-out", SuperAdminSessionController, :delete
   end
 end

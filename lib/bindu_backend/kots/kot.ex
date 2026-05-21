@@ -19,7 +19,7 @@ defmodule BinduBackend.Kot.Kot do
     belongs_to :user, BinduBackend.Accounts.User
     belongs_to :status, BinduBackend.Flags.KotStatus, foreign_key: :status_id
     belongs_to :kot_priority, BinduBackend.Flags.KotPriority, foreign_key: :kot_priority_id
-    belongs_to :order_type, BinduBackend.Flags.OrderType, foreign_key: :order_type_id
+    belongs_to :order_type, BinduBackend.Flags.OrderTypes, foreign_key: :order_type_id
 
     has_many :kot_items, BinduBackend.Kot.KotItem
 
@@ -29,12 +29,27 @@ defmodule BinduBackend.Kot.Kot do
   def changeset(kot, attrs) do
     kot
     |> cast(attrs, [
-      :kot_number, :sequence_number, :order_number,
-      :customer_name, :guest_count, :print_count,
-      :order_id, :table_id, :user_id,
-      :status_id, :kot_priority_id, :order_type_id
+      :kot_number,
+      :sequence_number,
+      :order_number,
+      :customer_name,
+      :guest_count,
+      :print_count,
+      :order_id,
+      :table_id,
+      :user_id,
+      :status_id,
+      :kot_priority_id,
+      :order_type_id
     ])
-    |> validate_required([:order_id, :table_id, :user_id, :status_id, :kot_priority_id, :order_type_id])
+    |> validate_required([
+      :order_id,
+      :table_id,
+      :user_id,
+      :status_id,
+      :kot_priority_id,
+      :order_type_id
+    ])
     |> foreign_key_constraint(:order_id)
     |> foreign_key_constraint(:table_id)
     |> foreign_key_constraint(:user_id)

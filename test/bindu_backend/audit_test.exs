@@ -8,7 +8,31 @@ defmodule BinduBackend.AuditTest do
 
     import BinduBackend.AuditFixtures
 
-    @invalid_attrs %{timestamp: nil, severity: nil, session_id: nil, event_type: nil, event_category: nil, event_description: nil, entity_type: nil, entity_id: nil, old_values: nil, new_values: nil, request_url: nil, http_method: nil, ip_address: nil, user_agent: nil, geolocation: nil, risk_level: nil, requires_review: nil, is_anomalous: nil, anomaly_reason: nil, compliance_flags: nil, is_pci_relevant: nil, is_gdpr_relevant: nil, reviewed_at: nil}
+    @invalid_attrs %{
+      timestamp: nil,
+      severity: nil,
+      session_id: nil,
+      event_type: nil,
+      event_category: nil,
+      event_description: nil,
+      entity_type: nil,
+      entity_id: nil,
+      old_values: nil,
+      new_values: nil,
+      request_url: nil,
+      http_method: nil,
+      ip_address: nil,
+      user_agent: nil,
+      geolocation: nil,
+      risk_level: nil,
+      requires_review: nil,
+      is_anomalous: nil,
+      anomaly_reason: nil,
+      compliance_flags: nil,
+      is_pci_relevant: nil,
+      is_gdpr_relevant: nil,
+      reviewed_at: nil
+    }
 
     test "list_audit_trails/0 returns all audit_trails" do
       audit_trail = audit_trail_fixture()
@@ -21,7 +45,31 @@ defmodule BinduBackend.AuditTest do
     end
 
     test "create_audit_trail/1 with valid data creates a audit_trail" do
-      valid_attrs = %{timestamp: ~U[2026-05-10 06:03:00Z], severity: "some severity", session_id: "some session_id", event_type: "some event_type", event_category: "some event_category", event_description: "some event_description", entity_type: "some entity_type", entity_id: "some entity_id", old_values: %{}, new_values: %{}, request_url: "some request_url", http_method: "some http_method", ip_address: "some ip_address", user_agent: "some user_agent", geolocation: %{}, risk_level: "some risk_level", requires_review: true, is_anomalous: true, anomaly_reason: "some anomaly_reason", compliance_flags: %{}, is_pci_relevant: true, is_gdpr_relevant: true, reviewed_at: ~U[2026-05-10 06:03:00Z]}
+      valid_attrs = %{
+        timestamp: ~U[2026-05-10 06:03:00Z],
+        severity: "some severity",
+        session_id: "some session_id",
+        event_type: "some event_type",
+        event_category: "some event_category",
+        event_description: "some event_description",
+        entity_type: "some entity_type",
+        entity_id: "some entity_id",
+        old_values: %{},
+        new_values: %{},
+        request_url: "some request_url",
+        http_method: "some http_method",
+        ip_address: "some ip_address",
+        user_agent: "some user_agent",
+        geolocation: %{},
+        risk_level: "some risk_level",
+        requires_review: true,
+        is_anomalous: true,
+        anomaly_reason: "some anomaly_reason",
+        compliance_flags: %{},
+        is_pci_relevant: true,
+        is_gdpr_relevant: true,
+        reviewed_at: ~U[2026-05-10 06:03:00Z]
+      }
 
       assert {:ok, %AuditTrail{} = audit_trail} = Audit.create_audit_trail(valid_attrs)
       assert audit_trail.timestamp == ~U[2026-05-10 06:03:00Z]
@@ -55,9 +103,36 @@ defmodule BinduBackend.AuditTest do
 
     test "update_audit_trail/2 with valid data updates the audit_trail" do
       audit_trail = audit_trail_fixture()
-      update_attrs = %{timestamp: ~U[2026-05-11 06:03:00Z], severity: "some updated severity", session_id: "some updated session_id", event_type: "some updated event_type", event_category: "some updated event_category", event_description: "some updated event_description", entity_type: "some updated entity_type", entity_id: "some updated entity_id", old_values: %{}, new_values: %{}, request_url: "some updated request_url", http_method: "some updated http_method", ip_address: "some updated ip_address", user_agent: "some updated user_agent", geolocation: %{}, risk_level: "some updated risk_level", requires_review: false, is_anomalous: false, anomaly_reason: "some updated anomaly_reason", compliance_flags: %{}, is_pci_relevant: false, is_gdpr_relevant: false, reviewed_at: ~U[2026-05-11 06:03:00Z]}
 
-      assert {:ok, %AuditTrail{} = audit_trail} = Audit.update_audit_trail(audit_trail, update_attrs)
+      update_attrs = %{
+        timestamp: ~U[2026-05-11 06:03:00Z],
+        severity: "some updated severity",
+        session_id: "some updated session_id",
+        event_type: "some updated event_type",
+        event_category: "some updated event_category",
+        event_description: "some updated event_description",
+        entity_type: "some updated entity_type",
+        entity_id: "some updated entity_id",
+        old_values: %{},
+        new_values: %{},
+        request_url: "some updated request_url",
+        http_method: "some updated http_method",
+        ip_address: "some updated ip_address",
+        user_agent: "some updated user_agent",
+        geolocation: %{},
+        risk_level: "some updated risk_level",
+        requires_review: false,
+        is_anomalous: false,
+        anomaly_reason: "some updated anomaly_reason",
+        compliance_flags: %{},
+        is_pci_relevant: false,
+        is_gdpr_relevant: false,
+        reviewed_at: ~U[2026-05-11 06:03:00Z]
+      }
+
+      assert {:ok, %AuditTrail{} = audit_trail} =
+               Audit.update_audit_trail(audit_trail, update_attrs)
+
       assert audit_trail.timestamp == ~U[2026-05-11 06:03:00Z]
       assert audit_trail.severity == "some updated severity"
       assert audit_trail.session_id == "some updated session_id"
@@ -119,7 +194,11 @@ defmodule BinduBackend.AuditTest do
     end
 
     test "create_anomaly_record/1 with valid data creates a anomaly_record" do
-      valid_attrs = %{description: "some description", detected_at: ~U[2026-05-10 06:06:00Z], anomaly_type: "some anomaly_type"}
+      valid_attrs = %{
+        description: "some description",
+        detected_at: ~U[2026-05-10 06:06:00Z],
+        anomaly_type: "some anomaly_type"
+      }
 
       assert {:ok, %AnomalyRecord{} = anomaly_record} = Audit.create_anomaly_record(valid_attrs)
       assert anomaly_record.description == "some description"
@@ -133,9 +212,16 @@ defmodule BinduBackend.AuditTest do
 
     test "update_anomaly_record/2 with valid data updates the anomaly_record" do
       anomaly_record = anomaly_record_fixture()
-      update_attrs = %{description: "some updated description", detected_at: ~U[2026-05-11 06:06:00Z], anomaly_type: "some updated anomaly_type"}
 
-      assert {:ok, %AnomalyRecord{} = anomaly_record} = Audit.update_anomaly_record(anomaly_record, update_attrs)
+      update_attrs = %{
+        description: "some updated description",
+        detected_at: ~U[2026-05-11 06:06:00Z],
+        anomaly_type: "some updated anomaly_type"
+      }
+
+      assert {:ok, %AnomalyRecord{} = anomaly_record} =
+               Audit.update_anomaly_record(anomaly_record, update_attrs)
+
       assert anomaly_record.description == "some updated description"
       assert anomaly_record.detected_at == ~U[2026-05-11 06:06:00Z]
       assert anomaly_record.anomaly_type == "some updated anomaly_type"
@@ -143,7 +229,10 @@ defmodule BinduBackend.AuditTest do
 
     test "update_anomaly_record/2 with invalid data returns error changeset" do
       anomaly_record = anomaly_record_fixture()
-      assert {:error, %Ecto.Changeset{}} = Audit.update_anomaly_record(anomaly_record, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Audit.update_anomaly_record(anomaly_record, @invalid_attrs)
+
       assert anomaly_record == Audit.get_anomaly_record!(anomaly_record.id)
     end
 

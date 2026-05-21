@@ -5,9 +5,9 @@ defmodule BinduBackend.AuditLogsFixtures do
   """
 
   @doc """
-  Generate a audit_log.
+  Generate a activity_log.
   """
-  def audit_log_fixture(scope, attrs \\ %{}) do
+  def activity_log_fixture(scope, attrs \\ %{}) do
     attrs =
       Enum.into(attrs, %{
         action: "some action",
@@ -15,7 +15,7 @@ defmodule BinduBackend.AuditLogsFixtures do
         entity_name: "some entity_name"
       })
 
-    {:ok, audit_log} = BinduBackend.AuditLogs.create_audit_log(scope, attrs)
-    audit_log
+    {:ok, activity_log} = BinduBackend.AuditLogs.create_activity_log(scope, attrs)
+    activity_log
   end
 end

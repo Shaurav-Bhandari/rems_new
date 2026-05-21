@@ -9,7 +9,13 @@ defmodule BinduBackend.MenusTest do
     import BinduBackend.AccountsFixtures, only: [user_scope_fixture: 0]
     import BinduBackend.MenusFixtures
 
-    @invalid_attrs %{name: nil, description: nil, display_order: nil, is_active: nil, category_image_url: nil}
+    @invalid_attrs %{
+      name: nil,
+      description: nil,
+      display_order: nil,
+      is_active: nil,
+      category_image_url: nil
+    }
 
     test "list_menus_category/1 returns all scoped menus_category" do
       scope = user_scope_fixture()
@@ -29,7 +35,14 @@ defmodule BinduBackend.MenusTest do
     end
 
     test "create_menu/2 with valid data creates a menu" do
-      valid_attrs = %{name: "some name", description: "some description", display_order: 42, is_active: true, category_image_url: "some category_image_url"}
+      valid_attrs = %{
+        name: "some name",
+        description: "some description",
+        display_order: 42,
+        is_active: true,
+        category_image_url: "some category_image_url"
+      }
+
       scope = user_scope_fixture()
 
       assert {:ok, %Menu{} = menu} = Menus.create_menu(scope, valid_attrs)
@@ -49,7 +62,14 @@ defmodule BinduBackend.MenusTest do
     test "update_menu/3 with valid data updates the menu" do
       scope = user_scope_fixture()
       menu = menu_fixture(scope)
-      update_attrs = %{name: "some updated name", description: "some updated description", display_order: 43, is_active: false, category_image_url: "some updated category_image_url"}
+
+      update_attrs = %{
+        name: "some updated name",
+        description: "some updated description",
+        display_order: 43,
+        is_active: false,
+        category_image_url: "some updated category_image_url"
+      }
 
       assert {:ok, %Menu{} = menu} = Menus.update_menu(scope, menu, update_attrs)
       assert menu.name == "some updated name"

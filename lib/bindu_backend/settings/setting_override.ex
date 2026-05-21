@@ -26,9 +26,20 @@ defmodule BinduBackend.Settings.SettingOverride do
 
   def changeset(override, attrs) do
     override
-    |> cast(attrs, [:key, :value, :min_role_level, :required_permission,
-        :priority, :inherit_from_parent, :active_from, :active_until,
-        :days_of_week, :reason, :created_by_id, :modified_by_id])
+    |> cast(attrs, [
+      :key,
+      :value,
+      :min_role_level,
+      :required_permission,
+      :priority,
+      :inherit_from_parent,
+      :active_from,
+      :active_until,
+      :days_of_week,
+      :reason,
+      :created_by_id,
+      :modified_by_id
+    ])
     |> validate_required([:key, :value, :created_by_id, :modified_by_id])
     |> unique_constraint(:key)
     |> foreign_key_constraint(:created_by_id)

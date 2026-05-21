@@ -40,8 +40,8 @@ defmodule BinduBackend.Flags do
       [%TableStatus{}, ...]
 
   """
-  def list_table_statuses(%Scope{} = scope) do
-    Repo.all_by(TableStatus, user_id: scope.user.id)
+  def list_table_statuses(%Scope{} = _scope) do
+    Repo.all(TableStatus)
   end
 
   @doc """
@@ -58,8 +58,8 @@ defmodule BinduBackend.Flags do
       ** (Ecto.NoResultsError)
 
   """
-  def get_table_status!(%Scope{} = scope, id) do
-    Repo.get_by!(TableStatus, id: id, user_id: scope.user.id)
+  def get_table_status!(%Scope{} = _scope, id) do
+    Repo.get!(TableStatus, id)
   end
 
   @doc """
@@ -77,7 +77,7 @@ defmodule BinduBackend.Flags do
   def create_table_status(%Scope{} = scope, attrs) do
     with {:ok, table_status = %TableStatus{}} <-
            %TableStatus{}
-           |> TableStatus.changeset(attrs, scope)
+           |> TableStatus.changeset(attrs)
            |> Repo.insert() do
       broadcast_table_status(scope, {:created, table_status})
       {:ok, table_status}
@@ -97,11 +97,9 @@ defmodule BinduBackend.Flags do
 
   """
   def update_table_status(%Scope{} = scope, %TableStatus{} = table_status, attrs) do
-    true = table_status.user_id == scope.user.id
-
     with {:ok, table_status = %TableStatus{}} <-
            table_status
-           |> TableStatus.changeset(attrs, scope)
+           |> TableStatus.changeset(attrs)
            |> Repo.update() do
       broadcast_table_status(scope, {:updated, table_status})
       {:ok, table_status}
@@ -121,8 +119,6 @@ defmodule BinduBackend.Flags do
 
   """
   def delete_table_status(%Scope{} = scope, %TableStatus{} = table_status) do
-    true = table_status.user_id == scope.user.id
-
     with {:ok, table_status = %TableStatus{}} <-
            Repo.delete(table_status) do
       broadcast_table_status(scope, {:deleted, table_status})
@@ -139,9 +135,7 @@ defmodule BinduBackend.Flags do
       %Ecto.Changeset{data: %TableStatus{}}
 
   """
-  def change_table_status(%Scope{} = scope, %TableStatus{} = table_status, attrs \\ %{}) do
-    true = table_status.user_id == scope.user.id
-
-    TableStatus.changeset(table_status, attrs, scope)
+  def change_table_status(%Scope{} = _scope, %TableStatus{} = table_status, attrs \\ %{}) do
+    TableStatus.changeset(table_status, attrs)
   end
 end

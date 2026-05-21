@@ -2,7 +2,6 @@ defmodule BinduBackend.Orders.Order do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   @primary_key {:id, Ecto.UUID, autogenerate: true}
   @foreign_key_type Ecto.UUID
   schema "orders" do
@@ -14,9 +13,8 @@ defmodule BinduBackend.Orders.Order do
     field :notes, :string
     timestamps(type: :utc_datetime)
 
-    belongs_to :table, BinduBackend.Restaurant.Table
+    belongs_to :table, BinduBackend.Restaurant.RestaurantTable
     belongs_to :user, BinduBackend.Accounts.User, type: Ecto.UUID
-    belongs_to :table, BinduBackend.Restaurant.Table, type: Ecto.UUID
 
     has_many :order_groups, BinduBackend.Orders.OrderGroup
     has_many :order_items, BinduBackend.Orders.OrderItem
@@ -28,8 +26,26 @@ defmodule BinduBackend.Orders.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:sub_total, :service_charge, :order_status, :order_type, :total_amount, :notes, :user_id, :taken_by_id, :table_id])
-    |> validate_required([:sub_total, :service_charge, :order_status, :order_type, :total_amount, :user_id, :taken_by_id])
+    |> cast(attrs, [
+      :sub_total,
+      :service_charge,
+      :order_status,
+      :order_type,
+      :total_amount,
+      :notes,
+      :user_id,
+      :taken_by_id,
+      :table_id
+    ])
+    |> validate_required([
+      :sub_total,
+      :service_charge,
+      :order_status,
+      :order_type,
+      :total_amount,
+      :user_id,
+      :taken_by_id
+    ])
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:taken_by_id)
     |> foreign_key_constraint(:table_id)

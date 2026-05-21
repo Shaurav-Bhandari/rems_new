@@ -12,7 +12,7 @@ defmodule BinduBackend.Restaurant.Area do
     field :description, :string
     field :display_order, :integer
 
-    belongs_to :floor, BinduBackend.Restaurant.Floor
+    belongs_to :floor, BinduBackend.Seatings.Floor
     has_many :restaurant_tables, BinduBackend.Restaurant.RestaurantTable
 
     timestamps(type: :utc_datetime)

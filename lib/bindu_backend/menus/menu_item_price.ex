@@ -9,7 +9,7 @@ defmodule BinduBackend.Menus.MenuItemPrice do
     field :price, :decimal
 
     belongs_to :menu_item, BinduBackend.Menus.MenuItem
-    belongs_to :order_type, BinduBackend.Flags.OrderType, foreign_key: :order_type_id
+    belongs_to :order_type, BinduBackend.Flags.OrderTypes, foreign_key: :order_type_id
 
     timestamps(type: :utc_datetime)
   end

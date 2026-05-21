@@ -28,10 +28,22 @@ defmodule BinduBackend.Settings.SettingAuditLog do
 
   def changeset(log, attrs) do
     log
-    |> cast(attrs, [:setting_key, :domain, :old_value, :new_value,
-        :changed_at, :reason, :ip_address, :user_agent,
-        :role_level, :was_elevated, :required_approval,
-        :approved_at, :changed_by_id, :approved_by_id])
+    |> cast(attrs, [
+      :setting_key,
+      :domain,
+      :old_value,
+      :new_value,
+      :changed_at,
+      :reason,
+      :ip_address,
+      :user_agent,
+      :role_level,
+      :was_elevated,
+      :required_approval,
+      :approved_at,
+      :changed_by_id,
+      :approved_by_id
+    ])
     |> validate_required([:setting_key, :domain, :changed_at, :role_level, :changed_by_id])
     |> foreign_key_constraint(:changed_by_id)
     |> foreign_key_constraint(:approved_by_id)

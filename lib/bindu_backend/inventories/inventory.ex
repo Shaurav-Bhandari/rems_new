@@ -2,6 +2,8 @@ defmodule BinduBackend.Inventories.Inventory do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, Ecto.UUID, autogenerate: true}
+  @foreign_key_type Ecto.UUID
   schema "inventory_item" do
     field :name, :string
     field :description, :string
@@ -22,8 +24,32 @@ defmodule BinduBackend.Inventories.Inventory do
   @doc false
   def changeset(inventory, attrs, user_scope) do
     inventory
-    |> cast(attrs, [:name, :description, :sku, :category, :measurement_unit, :current_quantity, :minimum_quantity, :maximum_quantity, :reorder_point, :unit_cost, :last_restock_date])
-    |> validate_required([:name, :description, :sku, :category, :measurement_unit, :current_quantity, :minimum_quantity, :maximum_quantity, :reorder_point, :unit_cost, :last_restock_date])
+    |> cast(attrs, [
+      :name,
+      :description,
+      :sku,
+      :category,
+      :measurement_unit,
+      :current_quantity,
+      :minimum_quantity,
+      :maximum_quantity,
+      :reorder_point,
+      :unit_cost,
+      :last_restock_date
+    ])
+    |> validate_required([
+      :name,
+      :description,
+      :sku,
+      :category,
+      :measurement_unit,
+      :current_quantity,
+      :minimum_quantity,
+      :maximum_quantity,
+      :reorder_point,
+      :unit_cost,
+      :last_restock_date
+    ])
     |> put_change(:user_id, user_scope.user.id)
   end
 end

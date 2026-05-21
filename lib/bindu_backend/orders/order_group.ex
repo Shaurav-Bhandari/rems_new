@@ -10,7 +10,7 @@ defmodule BinduBackend.Orders.OrderGroup do
 
     timestamps(type: :utc_datetime)
 
-    has_many :order_items, BinduBackend.Orders.OrderItem
+    has_many :order_items, BinduBackend.Orders.OrderItem, foreign_key: :group_id
   end
 
   @doc false

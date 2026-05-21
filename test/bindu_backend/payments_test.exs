@@ -8,7 +8,19 @@ defmodule BinduBackend.PaymentsTest do
 
     import BinduBackend.PaymentsFixtures
 
-    @invalid_attrs %{status: nil, amount: nil, payment_method: nil, transaction_id: nil, payment_date: nil, qr_image_data: nil, qr_expires_at: nil, fonepay_transaction_id: nil, verify_token: nil, encoded_params: nil, failure_reason: nil}
+    @invalid_attrs %{
+      status: nil,
+      amount: nil,
+      payment_method: nil,
+      transaction_id: nil,
+      payment_date: nil,
+      qr_image_data: nil,
+      qr_expires_at: nil,
+      fonepay_transaction_id: nil,
+      verify_token: nil,
+      encoded_params: nil,
+      failure_reason: nil
+    }
 
     test "list_payment_records/0 returns all payment_records" do
       payment_record = payment_record_fixture()
@@ -21,9 +33,23 @@ defmodule BinduBackend.PaymentsTest do
     end
 
     test "create_payment_record/1 with valid data creates a payment_record" do
-      valid_attrs = %{status: "some status", amount: "120.5", payment_method: "some payment_method", transaction_id: "some transaction_id", payment_date: ~U[2026-05-09 16:08:00Z], qr_image_data: "some qr_image_data", qr_expires_at: ~U[2026-05-09 16:08:00Z], fonepay_transaction_id: "some fonepay_transaction_id", verify_token: "some verify_token", encoded_params: "some encoded_params", failure_reason: "some failure_reason"}
+      valid_attrs = %{
+        status: "some status",
+        amount: "120.5",
+        payment_method: "some payment_method",
+        transaction_id: "some transaction_id",
+        payment_date: ~U[2026-05-09 16:08:00Z],
+        qr_image_data: "some qr_image_data",
+        qr_expires_at: ~U[2026-05-09 16:08:00Z],
+        fonepay_transaction_id: "some fonepay_transaction_id",
+        verify_token: "some verify_token",
+        encoded_params: "some encoded_params",
+        failure_reason: "some failure_reason"
+      }
 
-      assert {:ok, %PaymentRecord{} = payment_record} = Payments.create_payment_record(valid_attrs)
+      assert {:ok, %PaymentRecord{} = payment_record} =
+               Payments.create_payment_record(valid_attrs)
+
       assert payment_record.status == "some status"
       assert payment_record.amount == Decimal.new("120.5")
       assert payment_record.payment_method == "some payment_method"
@@ -43,9 +69,24 @@ defmodule BinduBackend.PaymentsTest do
 
     test "update_payment_record/2 with valid data updates the payment_record" do
       payment_record = payment_record_fixture()
-      update_attrs = %{status: "some updated status", amount: "456.7", payment_method: "some updated payment_method", transaction_id: "some updated transaction_id", payment_date: ~U[2026-05-10 16:08:00Z], qr_image_data: "some updated qr_image_data", qr_expires_at: ~U[2026-05-10 16:08:00Z], fonepay_transaction_id: "some updated fonepay_transaction_id", verify_token: "some updated verify_token", encoded_params: "some updated encoded_params", failure_reason: "some updated failure_reason"}
 
-      assert {:ok, %PaymentRecord{} = payment_record} = Payments.update_payment_record(payment_record, update_attrs)
+      update_attrs = %{
+        status: "some updated status",
+        amount: "456.7",
+        payment_method: "some updated payment_method",
+        transaction_id: "some updated transaction_id",
+        payment_date: ~U[2026-05-10 16:08:00Z],
+        qr_image_data: "some updated qr_image_data",
+        qr_expires_at: ~U[2026-05-10 16:08:00Z],
+        fonepay_transaction_id: "some updated fonepay_transaction_id",
+        verify_token: "some updated verify_token",
+        encoded_params: "some updated encoded_params",
+        failure_reason: "some updated failure_reason"
+      }
+
+      assert {:ok, %PaymentRecord{} = payment_record} =
+               Payments.update_payment_record(payment_record, update_attrs)
+
       assert payment_record.status == "some updated status"
       assert payment_record.amount == Decimal.new("456.7")
       assert payment_record.payment_method == "some updated payment_method"
@@ -61,7 +102,10 @@ defmodule BinduBackend.PaymentsTest do
 
     test "update_payment_record/2 with invalid data returns error changeset" do
       payment_record = payment_record_fixture()
-      assert {:error, %Ecto.Changeset{}} = Payments.update_payment_record(payment_record, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Payments.update_payment_record(payment_record, @invalid_attrs)
+
       assert payment_record == Payments.get_payment_record!(payment_record.id)
     end
 
