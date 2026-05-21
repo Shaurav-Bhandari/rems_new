@@ -15,13 +15,12 @@ defmodule BinduBackend.Repo.Migrations.CreateTenantOnboarding do
       add :payment_configured, :boolean, default: false, null: false
       add :inventory_setup, :boolean, default: false, null: false
       add :completed_at, :time
-      add :user_id, references(:users, on_delete: :delete_all)
+      add :user_id, :uuid
 
       timestamps(type: :utc_datetime)
     end
-
-    create unique_index(:tenant_onboardings, [:tenant_id])
-    create index(:tenant_onboardings, [:current_step])
-    create index(:tenant_onboardings, [:is_completed])
+    create unique_index(:tenant_onboarding, [:tenant_id])
+    create index(:tenant_onboarding, [:current_step])
+    create index(:tenant_onboarding, [:is_completed])
   end
 end

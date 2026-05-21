@@ -11,7 +11,7 @@ defmodule BinduBackend.Repo.Migrations.CreatePlans do
       add :max_restaurants, :integer
       add :max_users, :integer
       add :is_active, :boolean, default: false, null: false
-      add :user_id, references(:users, on_delete: :restrict)
+      add :user_id, :uuid
 
       timestamps(type: :utc_datetime)
     end

@@ -9,7 +9,7 @@ defmodule BinduBackend.Repo.Migrations.CreateSubscriptions do
       add :end_date, :date
       add :status, :string
       add :auto_renew, :boolean, default: false, null: false
-      add :user_id, references(:users, on_delete: :delete_all)
+      add :user_id, :uuid
 
       timestamps(type: :utc_datetime)
     end

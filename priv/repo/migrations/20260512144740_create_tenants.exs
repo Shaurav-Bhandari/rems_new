@@ -13,6 +13,8 @@ defmodule BinduBackend.Repo.Migrations.CreateTenants do
       add :domain, :text
       add :status, :string
       add :is_active, :boolean, default: false, null: false
+      add :user_id, :uuid
+
 
       timestamps(type: :utc_datetime)
     end
