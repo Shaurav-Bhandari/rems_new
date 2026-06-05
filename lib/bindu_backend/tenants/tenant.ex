@@ -18,8 +18,6 @@ defmodule BinduBackend.Tenants.Tenant do
     field :is_active,           :boolean, default: false
     field :is_deleted,          :boolean, default: false
 
-    has_many :subscriptions, BinduBackend.Plans.Subscription
-
     timestamps(type: :utc_datetime)
   end
 

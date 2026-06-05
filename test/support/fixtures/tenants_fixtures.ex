@@ -7,18 +7,17 @@ defmodule BinduBackend.TenantsFixtures do
   @doc """
   Generate a tenant.
   """
-  def tenant_fixture(scope, attrs \\ %{}) do
+  def tenant_fixture(_scope \\ nil, attrs \\ %{}) do
+    unique_num = System.unique_integer([:positive])
     attrs =
       Enum.into(attrs, %{
-        domain: "some domain",
-        is_active: true,
-        name: "some name",
-        schema_name: "some schema_name",
-        slug: "some slug",
-        status: "some status"
+        owner_email: "owner#{unique_num}@example.com",
+        owner_name: "Owner Name",
+        name: "Tenant Name #{unique_num}",
+        slug: "tenant_slug_#{unique_num}"
       })
 
-    {:ok, tenant} = BinduBackend.Tenants.create_tenant(scope, attrs)
+    {:ok, tenant} = BinduBackend.Tenants.create_tenant(attrs)
     tenant
   end
 

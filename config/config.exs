@@ -93,6 +93,8 @@ config :triplex,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :bindu_backend, :super_admin_email, "shauravbhandari2@gmail.com"
+
 config :bindu_backend, Oban,
   repo: BinduBackend.Repo,
   plugins: [

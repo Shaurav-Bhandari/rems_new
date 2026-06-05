@@ -4,7 +4,7 @@ defmodule BinduBackend.KotsTest do
   alias BinduBackend.Kots
 
   describe "kots" do
-    alias BinduBackend.Kots.Kot
+    alias BinduBackend.Kot.Kot
 
     import BinduBackend.AccountsFixtures, only: [user_scope_fixture: 0]
     import BinduBackend.KotsFixtures
