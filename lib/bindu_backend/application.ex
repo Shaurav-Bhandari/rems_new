@@ -12,6 +12,8 @@ defmodule BinduBackend.Application do
       BinduBackend.Repo,
       {DNSCluster, query: Application.get_env(:bindu_backend, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: BinduBackend.PubSub},
+      {Finch, name: BinduBackend.Finch},
+      {Oban, Application.fetch_env!(:bindu_backend, Oban)},
       # Start a worker by calling: BinduBackend.Worker.start_link(arg)
       # {BinduBackend.Worker, arg},
       # Start to serve requests, typically the last entry

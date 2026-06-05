@@ -93,6 +93,19 @@ config :triplex,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :bindu_backend, Oban,
+  repo: BinduBackend.Repo,
+  plugins: [
+    # keep 7 days
+    {Oban.Plugins.Pruner, max_age: 60 * 60 * 24 * 7},
+    {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(30)}
+  ],
+  queues: [
+    default: 10,
+    # low concurrency — DB-heavy work
+    tenant_provisioning: 3
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

@@ -67,7 +67,9 @@ defmodule BinduBackend.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:triplex, "~> 1.3"}
+      {:triplex, "~> 1.3"},
+      {:oban, "~> 2.23.0"},
+      {:ex_machina, "~> 2.8.0", only: :test}
     ]
   end
 

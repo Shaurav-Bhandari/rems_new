@@ -5,33 +5,48 @@ defmodule BinduBackend.Tenants.Tenant do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
-  schema "tenants" do
-    field :name, :string
-    field :slug, :string
-    field :schema_name, :string
-    field :domain, :string
-    field :status, :string, default: "pending"
-    field :is_active, :boolean, default: false
+ schema "tenants" do
+    field :name,                :string
+    field :slug,                :string
+    field :owner_email,         :string
+    field :owner_name,          :string
+    field :status,              :string, default: "pending"
+    field :provisioning_error,  :string
+    field :activated_at,        :utc_datetime
+    field :failed_at,           :utc_datetime
+    field :rolled_back_at,      :utc_datetime
+    field :is_active,           :boolean, default: false
+    field :is_deleted,          :boolean, default: false
 
-    # ✅ binary_id to match User's Ecto.UUID primary key
-    belongs_to :user, BinduBackend.Accounts.User, type: :binary_id
-
-    has_one :onboarding, BinduBackend.Tenants.TenantOnboarding, on_delete: :delete_all
+    has_many :subscriptions, BinduBackend.Plans.Subscription
 
     timestamps(type: :utc_datetime)
   end
 
-  def changeset(tenant, attrs, user_scope) do
+  @valid_statuses ~w(pending provisioning active failed rolled_back suspended)
+
+  def registration_changeset(tenant, attrs) do
     tenant
-    |> cast(attrs, [:name, :slug, :schema_name, :domain, :status, :is_active])
-    |> validate_required([:name, :slug, :schema_name, :domain, :status])
-    |> validate_format(:slug, ~r/^[a-z0-9_]+$/,
-      message: "only lowercase letters, numbers, underscores"
-    )
-    |> validate_inclusion(:status, ["pending", "active", "suspended"])
+    |> cast(attrs, [:name, :slug, :owner_email, :owner_name])
+    |> validate_required([:name, :slug, :owner_email, :owner_name])
+    |> validate_format(:owner_email, ~r/^[^\s]+@[^\s]+$/, message: "must be a valid email")
+    |> validate_format(:slug, ~r/^[a-z0-9_]+$/, message: "only lowercase letters, numbers and underscores")
+    |> validate_length(:slug, min: 3, max: 50)
     |> unique_constraint(:slug)
-    |> unique_constraint(:schema_name)
-    |> unique_constraint(:domain)
-    |> put_change(:user_id, user_scope.user.id)
+    |> unique_constraint(:owner_email)
+    |> put_change(:status, "pending")
+  end
+
+  def status_changeset(tenant, attrs) do
+    tenant
+    |> cast(attrs, [:status, :activated_at, :failed_at, :rolled_back_at, :is_active])
+    |> validate_required([:status])
+    |> validate_inclusion(:status, @valid_statuses)
+  end
+
+  def provisioning_failed_changeset(tenant, attrs) do
+    tenant
+    |> cast(attrs, [:status, :provisioning_error, :failed_at])
+    |> validate_required([:status, :provisioning_error])
   end
 end

@@ -148,4 +148,26 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
       timestamps(type: :utc_datetime)
     end
   end
+
+  def change do
+    alter table(:table_statuses) do
+      add :color, :string, null: true, comment: "Hex color code e.g. #22c55e"
+    end
+
+    alter table(:order_item_statuses) do
+      add :color, :string, null: true
+    end
+
+    alter table(:kot_statuses) do
+      add :color, :string, null: true
+    end
+
+    alter table(:kot_priorities) do
+      add :color, :string, null: true
+    end
+
+    alter table(:reservation_statuses) do
+      add :color, :string, null: true
+    end
+  end
 end

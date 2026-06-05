@@ -15,7 +15,6 @@ defmodule BinduBackend.Repo.Migrations.CreateTenants do
       add :is_active, :boolean, default: false, null: false
       add :user_id, :uuid
 
-
       timestamps(type: :utc_datetime)
     end
 

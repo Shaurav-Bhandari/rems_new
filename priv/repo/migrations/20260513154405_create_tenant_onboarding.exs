@@ -19,6 +19,7 @@ defmodule BinduBackend.Repo.Migrations.CreateTenantOnboarding do
 
       timestamps(type: :utc_datetime)
     end
+
     create unique_index(:tenant_onboarding, [:tenant_id])
     create index(:tenant_onboarding, [:current_step])
     create index(:tenant_onboarding, [:is_completed])
