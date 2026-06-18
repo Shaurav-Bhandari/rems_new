@@ -25,12 +25,6 @@ defmodule BinduBackend.Tenants do
     Phoenix.PubSub.subscribe(BinduBackend.PubSub, "user:#{key}:tenants")
   end
 
-  defp broadcast_tenant(%Scope{} = scope, message) do
-    key = scope.user.id
-
-    Phoenix.PubSub.broadcast(BinduBackend.PubSub, "user:#{key}:tenants", message)
-  end
-
   @doc """
   Returns the list of tenants.
 
@@ -159,7 +153,7 @@ defmodule BinduBackend.Tenants do
 
   """
   def list_tenant_onboarding(%Scope{} = scope) do
-    Repo.all_by(TenantOnboarding, user_id: scope.user.id)
+    Repo.all_by(TenantOnboarding, account_id: scope.user.id)
   end
 
   @doc """
@@ -177,7 +171,7 @@ defmodule BinduBackend.Tenants do
 
   """
   def get_tenant_onboarding!(%Scope{} = scope, id) do
-    Repo.get_by!(TenantOnboarding, id: id, user_id: scope.user.id)
+    Repo.get_by!(TenantOnboarding, id: id, account_id: scope.user.id)
   end
 
   @doc """
@@ -215,7 +209,7 @@ defmodule BinduBackend.Tenants do
 
   """
   def update_tenant_onboarding(%Scope{} = scope, %TenantOnboarding{} = tenant_onboarding, attrs) do
-    true = tenant_onboarding.user_id == scope.user.id
+    true = tenant_onboarding.account_id == scope.user.id
 
     with {:ok, tenant_onboarding = %TenantOnboarding{}} <-
            tenant_onboarding
@@ -239,7 +233,7 @@ defmodule BinduBackend.Tenants do
 
   """
   def delete_tenant_onboarding(%Scope{} = scope, %TenantOnboarding{} = tenant_onboarding) do
-    true = tenant_onboarding.user_id == scope.user.id
+    true = tenant_onboarding.account_id == scope.user.id
 
     with {:ok, tenant_onboarding = %TenantOnboarding{}} <-
            Repo.delete(tenant_onboarding) do
@@ -262,7 +256,7 @@ defmodule BinduBackend.Tenants do
         %TenantOnboarding{} = tenant_onboarding,
         attrs \\ %{}
       ) do
-    true = tenant_onboarding.user_id == scope.user.id
+    true = tenant_onboarding.account_id == scope.user.id
 
     TenantOnboarding.changeset(tenant_onboarding, attrs, scope)
   end

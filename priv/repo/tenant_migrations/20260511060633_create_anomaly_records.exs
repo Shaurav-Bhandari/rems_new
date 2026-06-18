@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateAnomalyRecords do
+defmodule BinduBackend.Repo.TenantMigrations.CreateAnomalyRecords do
   use Ecto.Migration
 
   def change do
@@ -14,3 +14,4 @@ defmodule BinduBackend.Repo.Migrations.CreateAnomalyRecords do
     create index(:anomaly_records, [:detected_at])
   end
 end
+

@@ -7,27 +7,15 @@
 # General application configuration
 import Config
 
-# Scopes — both defined in a single block to avoid the second overwriting the first
 config :bindu_backend, :scopes,
-  super_admin: [
-    default: false,
-    module: BinduBackend.SuperAdmins.Scope,
-    assign_key: :current_scope,
-    access_path: [:super_admin, :id],
-    schema_key: :super_admin_id,
-    schema_type: :id,
-    schema_table: :super_admins,
-    test_data_fixture: BinduBackend.SuperAdminsFixtures,
-    test_setup_helper: :register_and_log_in_super_admin
-  ],
   user: [
     default: true,
     module: BinduBackend.Accounts.Scope,
     assign_key: :current_scope,
     access_path: [:user, :id],
-    schema_key: :user_id,
+    schema_key: :account_id,
     schema_type: :id,
-    schema_table: :users,
+    schema_table: :accounts,
     test_data_fixture: BinduBackend.AccountsFixtures,
     test_setup_helper: :register_and_log_in_user
   ]
@@ -93,7 +81,7 @@ config :triplex,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :bindu_backend, :super_admin_email, "shauravbhandari2@gmail.com"
+config :bindu_backend, :initial_super_admin_email, "shauravbhandari2@gmail.com"
 
 config :bindu_backend, Oban,
   repo: BinduBackend.Repo,

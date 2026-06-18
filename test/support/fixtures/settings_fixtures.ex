@@ -4,21 +4,26 @@ defmodule BinduBackend.SettingsFixtures do
   entities via the `BinduBackend.Settings` context.
   """
 
+  import BinduBackend.AccountsFixtures
+
   @doc """
   Generate a tenant_setting.
   """
   def tenant_setting_fixture(attrs \\ %{}) do
+    user = attrs[:modified_by] || user_fixture()
+
     {:ok, tenant_setting} =
       attrs
       |> Enum.into(%{
-        data_type: "some data_type",
+        data_type: "string",
         default_value: "some default_value",
         description: "some description",
-        domain: "some domain",
+        domain: "financial",
         is_system_locked: true,
         key: "some key",
         min_role_level: 42,
         modified_at: ~U[2026-05-10 06:24:00Z],
+        modified_by_id: user.id,
         previous_value: "some previous_value",
         required_permission: "some required_permission",
         validation_rule: "some validation_rule",
@@ -74,18 +79,20 @@ defmodule BinduBackend.SettingsFixtures do
   Generate a user_profile.
   """
   def user_profile_fixture(attrs \\ %{}) do
+    user = attrs[:user] || user_fixture()
+
     {:ok, user_profile} =
       attrs
       |> Enum.into(%{
         average_order_value: "120.5",
         can_login_offsite: true,
         commission_rate: "120.5",
-        default_shift: "some default_shift",
+        default_shift: "morning",
         department: "some department",
         elevation_expires_at: ~U[2026-05-10 06:24:00Z],
         elevation_reason: "some elevation_reason",
         employee_number: "some employee_number",
-        employment_status: "some employment_status",
+        employment_status: "active",
         hire_date: ~D[2026-05-10],
         hourly_rate: "120.5",
         job_title: "some job_title",
@@ -94,15 +101,16 @@ defmodule BinduBackend.SettingsFixtures do
         monthly_salary: "120.5",
         notes: "some notes",
         notification_preferences: %{},
-        performance_rating: "120.5",
+        performance_rating: "4.5",
         preferred_language: "some preferred_language",
-        profile_type: "some profile_type",
+        profile_type: "staff",
         requires_pin_for_actions: true,
         role_level: 42,
         shift_pattern: "some shift_pattern",
         temporary_elevation: true,
         termination_date: ~D[2026-05-10],
         total_orders_processed: 42,
+        user_id: user.id,
         weekly_hours: 42
       })
       |> BinduBackend.Settings.create_user_profile()
@@ -114,15 +122,20 @@ defmodule BinduBackend.SettingsFixtures do
   Generate a setting_override.
   """
   def setting_override_fixture(attrs \\ %{}) do
+    created_by = attrs[:created_by] || user_fixture()
+    modified_by = attrs[:modified_by] || user_fixture()
+
     {:ok, setting_override} =
       attrs
       |> Enum.into(%{
         active_from: ~U[2026-05-10 06:24:00Z],
         active_until: ~U[2026-05-10 06:24:00Z],
+        created_by_id: created_by.id,
         days_of_week: %{},
         inherit_from_parent: true,
         key: "some key",
         min_role_level: 42,
+        modified_by_id: modified_by.id,
         priority: 42,
         reason: "some reason",
         required_permission: "some required_permission",
@@ -137,6 +150,9 @@ defmodule BinduBackend.SettingsFixtures do
   Generate a elevation_token.
   """
   def elevation_token_fixture(attrs \\ %{}) do
+    user = attrs[:user] || user_fixture()
+    manager = attrs[:manager] || user_fixture()
+
     {:ok, elevation_token} =
       attrs
       |> Enum.into(%{
@@ -145,9 +161,11 @@ defmodule BinduBackend.SettingsFixtures do
         expires_at: ~U[2026-05-10 06:24:00Z],
         ip_address: "some ip_address",
         is_used: true,
+        manager_id: manager.id,
         permission: "some permission",
         request_reason: "some request_reason",
         token_hash: "some token_hash",
+        user_id: user.id,
         used_at: ~U[2026-05-10 06:24:00Z]
       })
       |> BinduBackend.Settings.create_elevation_token()
@@ -159,12 +177,15 @@ defmodule BinduBackend.SettingsFixtures do
   Generate a setting_audit_log.
   """
   def setting_audit_log_fixture(attrs \\ %{}) do
+    user = attrs[:changed_by] || user_fixture()
+
     {:ok, setting_audit_log} =
       attrs
       |> Enum.into(%{
         approved_at: ~U[2026-05-10 06:24:00Z],
         changed_at: ~U[2026-05-10 06:24:00Z],
-        domain: "some domain",
+        changed_by_id: user.id,
+        domain: "financial",
         ip_address: "some ip_address",
         new_value: "some new_value",
         old_value: "some old_value",

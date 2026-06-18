@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateSettingAuditLogs do
+defmodule BinduBackend.Repo.TenantMigrations.CreateSettingAuditLogs do
   use Ecto.Migration
 
   def change do
@@ -15,8 +15,8 @@ defmodule BinduBackend.Repo.Migrations.CreateSettingAuditLogs do
       add :was_elevated, :boolean, default: false, null: false
       add :required_approval, :boolean, default: false, null: false
       add :approved_at, :utc_datetime
-      add :changed_by_id, references(:users, on_delete: :nothing)
-      add :approved_by_id, references(:users, on_delete: :nothing)
+      add :changed_by_id, references(:users, type: :uuid, on_delete: :nothing)
+      add :approved_by_id, references(:users, type: :uuid, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end
@@ -25,3 +25,4 @@ defmodule BinduBackend.Repo.Migrations.CreateSettingAuditLogs do
     create index(:setting_audit_logs, [:approved_by_id])
   end
 end
+

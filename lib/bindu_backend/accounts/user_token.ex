@@ -3,6 +3,8 @@ defmodule BinduBackend.Accounts.UserToken do
   import Ecto.Query
   alias BinduBackend.Accounts.UserToken
 
+  @foreign_key_type Ecto.UUID
+
   @hash_algorithm :sha256
   @rand_size 32
 
@@ -12,12 +14,12 @@ defmodule BinduBackend.Accounts.UserToken do
   @change_email_validity_in_days 7
   @session_validity_in_days 14
 
-  schema "users_tokens" do
+  schema "accounts_tokens" do
     field :token, :binary
     field :context, :string
     field :sent_to, :string
     field :authenticated_at, :utc_datetime
-    belongs_to :user, BinduBackend.Accounts.User
+    belongs_to :user, BinduBackend.Accounts.User, foreign_key: :account_id
 
     timestamps(type: :utc_datetime, updated_at: false)
   end
@@ -44,7 +46,9 @@ defmodule BinduBackend.Accounts.UserToken do
   def build_session_token(user) do
     token = :crypto.strong_rand_bytes(@rand_size)
     dt = user.authenticated_at || DateTime.utc_now(:second)
-    {token, %UserToken{token: token, context: "session", user_id: user.id, authenticated_at: dt}}
+
+    {token,
+     %UserToken{token: token, context: "session", account_id: user.id, authenticated_at: dt}}
   end
 
   @doc """
@@ -91,7 +95,7 @@ defmodule BinduBackend.Accounts.UserToken do
        token: hashed_token,
        context: context,
        sent_to: sent_to,
-       user_id: user.id
+       account_id: user.id
      }}
   end
 

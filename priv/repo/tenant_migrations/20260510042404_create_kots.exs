@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateKots do
+defmodule BinduBackend.Repo.TenantMigrations.CreateKots do
   use Ecto.Migration
 
   def change do
@@ -42,3 +42,4 @@ defmodule BinduBackend.Repo.Migrations.CreateKots do
     create index(:kot_items, [:status_id])
   end
 end
+

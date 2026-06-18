@@ -21,7 +21,8 @@ defmodule BinduBackend.Repo.Migrations.CreateSuperAdminsAuthTables do
     create unique_index(:super_admins, [:email])
 
     create table(:super_admins_tokens) do
-      add :super_admin_id, references(:super_admins, type: :binary_id, on_delete: :delete_all), null: false 
+      add :super_admin_id, references(:super_admins, type: :binary_id, on_delete: :delete_all),
+        null: false
 
       add :token, :binary, null: false
       add :context, :string, null: false

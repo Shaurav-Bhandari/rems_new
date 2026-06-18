@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateOrders do
+defmodule BinduBackend.Repo.TenantMigrations.CreateOrders do
   use Ecto.Migration
 
   def change do
@@ -12,7 +12,7 @@ defmodule BinduBackend.Repo.Migrations.CreateOrders do
       add :total_amount, :float
       add :notes, :text
       add :user_id, references(:users, on_delete: :restrict, type: :uuid), null: false
-      add :table_id, references(:tables, on_delete: :restrict, type: :uuid), null: false
+      add :table_id, references(:restaurant_tables, on_delete: :restrict, type: :uuid), null: false
 
       timestamps(type: :utc_datetime)
     end
@@ -34,3 +34,4 @@ defmodule BinduBackend.Repo.Migrations.CreateOrders do
     end
   end
 end
+

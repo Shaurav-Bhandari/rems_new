@@ -9,6 +9,7 @@ defmodule BinduBackend.TenantsFixtures do
   """
   def tenant_fixture(_scope \\ nil, attrs \\ %{}) do
     unique_num = System.unique_integer([:positive])
+
     attrs =
       Enum.into(attrs, %{
         owner_email: "owner#{unique_num}@example.com",

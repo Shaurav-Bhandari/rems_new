@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateInventoryItem do
+defmodule BinduBackend.Repo.TenantMigrations.CreateInventoryItem do
   use Ecto.Migration
 
   def change do
@@ -14,7 +14,7 @@ defmodule BinduBackend.Repo.Migrations.CreateInventoryItem do
       add :reorder_point, :float
       add :unit_cost, :float
       add :last_restock_date, :date
-      add :user_id, references(:users, on_delete: :delete_all)
+      add :user_id, references(:users, type: :uuid, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)
     end
@@ -22,3 +22,4 @@ defmodule BinduBackend.Repo.Migrations.CreateInventoryItem do
     create index(:inventory_item, [:user_id])
   end
 end
+

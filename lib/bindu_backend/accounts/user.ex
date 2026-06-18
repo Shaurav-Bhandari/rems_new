@@ -5,10 +5,11 @@ defmodule BinduBackend.Accounts.User do
   @primary_key {:id, Ecto.UUID, autogenerate: true}
   @foreign_key_type Ecto.UUID
 
-  schema "users" do
+  schema "accounts" do
     field :first_name, :string
     field :last_name, :string
     field :email, :string
+    field :role, :string, default: "user"
     field :contact_number, :string
     field :address, :string
     field :password, :string, virtual: true, redact: true
@@ -23,6 +24,7 @@ defmodule BinduBackend.Accounts.User do
     field :confirmed_at, :utc_datetime
     field :deleted_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
+    field :last_login_at, :utc_datetime
 
     # many_to_many :roles, BinduBackend.RBAC.Role, join_through: "user_roles", on_replace: :delete
     has_many :notifications, BinduBackend.Notifications.Notification, foreign_key: :user_id
@@ -33,6 +35,8 @@ defmodule BinduBackend.Accounts.User do
 
     timestamps(type: :utc_datetime)
   end
+
+  @roles ~w(super_admin tenant_admin staff user)
 
   @doc """
   A user changeset for registering or changing the email.
@@ -49,6 +53,21 @@ defmodule BinduBackend.Accounts.User do
     user
     |> cast(attrs, [:email])
     |> validate_email(opts)
+  end
+
+  def registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :first_name, :last_name, :role])
+    |> validate_email(opts)
+    |> validate_role()
+  end
+
+  def admin_invite_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :first_name, :last_name, :role])
+    |> validate_required([:first_name, :role])
+    |> validate_email(opts)
+    |> validate_role()
   end
 
   defp validate_email(changeset, opts) do
@@ -76,6 +95,12 @@ defmodule BinduBackend.Accounts.User do
     else
       changeset
     end
+  end
+
+  defp validate_role(changeset) do
+    changeset
+    |> validate_required([:role])
+    |> validate_inclusion(:role, @roles)
   end
 
   @doc """

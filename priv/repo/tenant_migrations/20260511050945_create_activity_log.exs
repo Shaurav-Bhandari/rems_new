@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateActivityLogs do
+defmodule BinduBackend.Repo.TenantMigrations.CreateActivityLogs do
   use Ecto.Migration
 
   def change do
@@ -19,3 +19,4 @@ defmodule BinduBackend.Repo.Migrations.CreateActivityLogs do
     create index(:activity_logs, [:action])
   end
 end
+

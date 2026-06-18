@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateRbacTables do
+defmodule BinduBackend.Repo.TenantMigrations.CreateRbacTables do
   use Ecto.Migration
 
   def change do
@@ -30,6 +30,9 @@ defmodule BinduBackend.Repo.Migrations.CreateRbacTables do
     end
 
 
+    create unique_index(:roles, [:role_name])
+    create unique_index(:permissions, [:permission_name])
     create unique_index(:role_permissions, [:role_id, :permission_id])
   end
 end
+

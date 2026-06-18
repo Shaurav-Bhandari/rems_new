@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateFloors do
+defmodule BinduBackend.Repo.TenantMigrations.CreateFloors do
   use Ecto.Migration
 
   def change do
@@ -80,3 +80,4 @@ defmodule BinduBackend.Repo.Migrations.CreateFloors do
     create index(:table_reservations, [:reservation_time])
   end
 end
+

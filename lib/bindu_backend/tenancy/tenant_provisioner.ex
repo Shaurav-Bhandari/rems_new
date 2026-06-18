@@ -4,7 +4,7 @@ defmodule BinduBackend.Tenancy.TenantProvisioner do
   require Logger
 
   alias BinduBackend.Repo
-  alias BinduBackend.Public.Tenant
+  alias BinduBackend.Tenants.Tenant
   alias BinduBackend.Tenancy.{SchemaManager, TenantSeeder}
 
   @steps [
@@ -49,9 +49,15 @@ defmodule BinduBackend.Tenancy.TenantProvisioner do
   defp run_step(:seed_admin_user, tenant, _acc),
     do: TenantSeeder.seed_admin_user(tenant)
 
-  defp run_step(:activate_tenant, tenant, _acc) do
+  defp run_step(:activate_tenant, tenant, acc) do
+    owner_account_id = get_in(acc, [:seed_admin_user, :account_id])
+
     tenant
-    |> Tenant.status_changeset(%{status: :active, activated_at: DateTime.utc_now()})
+    |> Tenant.status_changeset(%{
+      status: "active",
+      activated_at: DateTime.utc_now(),
+      owner_account_id: owner_account_id
+    })
     |> Repo.update()
   end
 end

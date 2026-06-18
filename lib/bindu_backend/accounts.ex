@@ -75,9 +75,66 @@ defmodule BinduBackend.Accounts do
 
   """
   def register_user(attrs) do
+    attrs =
+      attrs
+      |> stringify_keys()
+      |> Map.put_new("role", "user")
+
     %User{}
-    |> User.email_changeset(attrs)
+    |> User.registration_changeset(attrs)
     |> Repo.insert()
+  end
+
+  def invite_admin(inviter, attrs) do
+    with :ok <- require_global_admin(inviter) do
+      %User{}
+      |> User.admin_invite_changeset(attrs)
+      |> Repo.insert()
+    end
+  end
+
+  def ensure_tenant_admin_account(attrs) do
+    email = Map.get(attrs, :email) || Map.get(attrs, "email")
+
+    case get_user_by_email(email) do
+      %User{} = user ->
+        {:ok, user}
+
+      nil ->
+        attrs =
+          attrs
+          |> stringify_keys()
+          |> Map.put("role", "tenant_admin")
+
+        %User{}
+        |> User.admin_invite_changeset(attrs)
+        |> Repo.insert()
+    end
+  end
+
+  defp require_global_admin(%User{role: role}) when role in ["super_admin", "tenant_admin"],
+    do: :ok
+
+  defp require_global_admin(_), do: {:error, :unauthorized}
+
+  defp stringify_keys(attrs) do
+    Map.new(attrs, fn
+      {key, value} when is_atom(key) -> {Atom.to_string(key), value}
+      {key, value} -> {key, value}
+    end)
+  end
+
+  def update_account_role(%User{} = user, role)
+      when role in ~w(super_admin tenant_admin staff user) do
+    user
+    |> Ecto.Changeset.change(role: role)
+    |> Repo.update()
+  end
+
+  def confirm_user(%User{} = user) do
+    user
+    |> User.confirm_changeset()
+    |> Repo.update()
   end
 
   ## Settings
@@ -124,7 +181,7 @@ defmodule BinduBackend.Accounts do
            %UserToken{sent_to: email} <- Repo.one(query),
            {:ok, user} <- Repo.update(User.email_changeset(user, %{email: email})),
            {_count, _result} <-
-             Repo.delete_all(from(UserToken, where: [user_id: ^user.id, context: ^context])) do
+             Repo.delete_all(from(UserToken, where: [account_id: ^user.id, context: ^context])) do
         {:ok, user}
       else
         _ -> {:error, :transaction_aborted}
@@ -286,7 +343,7 @@ defmodule BinduBackend.Accounts do
   defp update_user_and_delete_all_tokens(changeset) do
     Repo.transact(fn ->
       with {:ok, user} <- Repo.update(changeset) do
-        tokens_to_expire = Repo.all_by(UserToken, user_id: user.id)
+        tokens_to_expire = Repo.all_by(UserToken, account_id: user.id)
 
         Repo.delete_all(from(t in UserToken, where: t.id in ^Enum.map(tokens_to_expire, & &1.id)))
 

@@ -15,7 +15,7 @@ defmodule BinduBackend.Tenants.TenantOnboarding do
     field :payment_configured, :boolean, default: false
     field :inventory_setup, :boolean, default: false
     field :completed_at, :time
-    field :user_id, :id
+    field :account_id, Ecto.UUID
 
     timestamps(type: :utc_datetime)
 
@@ -49,6 +49,6 @@ defmodule BinduBackend.Tenants.TenantOnboarding do
       :inventory_setup,
       :completed_at
     ])
-    |> put_change(:user_id, user_scope.user.id)
+    |> put_change(:account_id, user_scope.user.id)
   end
 end

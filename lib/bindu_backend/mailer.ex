@@ -6,7 +6,7 @@ defmodule BinduBackend.Mailer do
   import Swoosh.Email
 
   @from_email "noreply@bindubackend.com"
-  @from_name  "Bindu RMS"
+  @from_name "Bindu RMS"
 
   @doc """
   Sends a welcome email to the new tenant owner with their temporary password.

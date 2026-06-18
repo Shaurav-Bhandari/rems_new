@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreatePaymentRecords do
+defmodule BinduBackend.Repo.TenantMigrations.CreatePaymentRecords do
   use Ecto.Migration
 
   def change do
@@ -71,3 +71,4 @@ defmodule BinduBackend.Repo.Migrations.CreatePaymentRecords do
     create index(:invoices, [:due_date])
   end
 end
+

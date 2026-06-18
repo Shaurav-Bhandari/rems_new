@@ -1,8 +1,9 @@
-defmodule BinduBackend.Repo.Migrations.CreateRestaurantProfiles do
+defmodule BinduBackend.Repo.TenantMigrations.CreateRestaurantProfiles do
   use Ecto.Migration
 
   def change do
-    create table(:restaurant_profiles) do
+    create table(:restaurant_profiles, primary_key: false) do
+      add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :currency_code, :string
       add :tax_registration_number, :string
       add :service_charge_pct, :decimal
@@ -36,3 +37,4 @@ defmodule BinduBackend.Repo.Migrations.CreateRestaurantProfiles do
     end
   end
 end
+

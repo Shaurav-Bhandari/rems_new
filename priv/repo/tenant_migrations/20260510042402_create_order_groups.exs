@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateOrderGroups do
+defmodule BinduBackend.Repo.TenantMigrations.CreateOrderGroups do
   use Ecto.Migration
 
   def change do
@@ -8,7 +8,7 @@ defmodule BinduBackend.Repo.Migrations.CreateOrderGroups do
       add :sub_total, :float, default: 0.0, null: false
       add :is_paid, :boolean, default: false, null: false
       add :paid_at, :utc_datetime
-      add :order_id, references(:orders, on_delete: :nothing)
+      add :order_id, references(:orders, type: :uuid, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end
@@ -16,3 +16,4 @@ defmodule BinduBackend.Repo.Migrations.CreateOrderGroups do
     create index(:order_groups, [:order_id])
   end
 end
+

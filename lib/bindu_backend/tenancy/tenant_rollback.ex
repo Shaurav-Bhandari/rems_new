@@ -4,7 +4,7 @@ defmodule BinduBackend.Tenancy.TenantRollback do
   require Logger
 
   alias BinduBackend.Repo
-  alias BinduBackend.Public.Tenant
+  alias BinduBackend.Tenants.Tenant
   alias BinduBackend.Tenancy.SchemaManager
 
   @doc """
@@ -12,7 +12,7 @@ defmodule BinduBackend.Tenancy.TenantRollback do
   Only callable by a super admin on a :failed tenant.
   """
   def rollback_tenant(%Tenant{status: :failed} = tenant) do
-    Logger.warn("[TenantRollback] Rolling back tenant: #{tenant.slug}")
+    Logger.warning("[TenantRollback] Rolling back tenant: #{tenant.slug}")
 
     with {:ok, _} <- SchemaManager.drop_schema(tenant.slug),
          {:ok, tenant} <- mark_rolled_back(tenant) do

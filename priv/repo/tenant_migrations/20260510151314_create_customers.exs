@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateCustomers do
+defmodule BinduBackend.Repo.TenantMigrations.CreateCustomers do
   use Ecto.Migration
 
   def change do
@@ -12,7 +12,7 @@ defmodule BinduBackend.Repo.Migrations.CreateCustomers do
       add :loyalty_points, :integer
       add :total_spent, :float
       add :is_active, :boolean, default: false, null: false
-      add :user_id, references(:users, on_delete: :delete_all)
+      add :user_id, references(:users, type: :uuid, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)
     end
@@ -20,3 +20,4 @@ defmodule BinduBackend.Repo.Migrations.CreateCustomers do
     create index(:customers, [:user_id])
   end
 end
+

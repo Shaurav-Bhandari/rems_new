@@ -1,8 +1,9 @@
-defmodule BinduBackend.Repo.Migrations.CreateTenantSettings do
+defmodule BinduBackend.Repo.TenantMigrations.CreateTenantSettings do
   use Ecto.Migration
 
   def change do
-    create table(:tenant_settings) do
+    create table(:tenant_settings, primary_key: false) do
+      add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :key, :string
       add :value, :text
       add :domain, :string
@@ -15,11 +16,12 @@ defmodule BinduBackend.Repo.Migrations.CreateTenantSettings do
       add :validation_rule, :text
       add :default_value, :string
       add :modified_at, :utc_datetime
-      add :user_id, references(:users, on_delete: :nothing)
+      add :modified_by_id, references(:users, type: :uuid, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end
 
-    create index(:tenant_settings, [:user_id])
+    create index(:tenant_settings, [:modified_by_id])
   end
 end
+

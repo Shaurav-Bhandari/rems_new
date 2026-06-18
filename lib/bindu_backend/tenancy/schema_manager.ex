@@ -10,14 +10,12 @@ defmodule BinduBackend.Tenancy.SchemaManager do
   Safe to call on retry — skips if already exists.
   """
   def create_schema(slug) do
-    case Triplex.create(slug, Repo) do
-      {:ok, _} ->
-        Logger.info("[SchemaManager] Created schema: #{slug}")
-        {:ok, :created}
+    schema_name = "tenant_#{slug}"
 
-      {:error, %{postgres: %{code: :duplicate_schema}}} ->
-        Logger.info("[SchemaManager] Schema already exists (idempotent): #{slug}")
-        {:ok, :already_existed}
+    case Ecto.Adapters.SQL.query(Repo, "CREATE SCHEMA IF NOT EXISTS #{schema_name}", []) do
+      {:ok, _} ->
+        Logger.info("[SchemaManager] Created schema: #{schema_name}")
+        {:ok, :created}
 
       {:error, reason} ->
         {:error, reason}
@@ -29,13 +27,34 @@ defmodule BinduBackend.Tenancy.SchemaManager do
   Triplex.migrate is idempotent — already-run migrations are skipped.
   """
   def run_migrations(slug) do
-    case Triplex.migrate(slug, Repo) do
-      {:ok, _, _} ->
-        Logger.info("[SchemaManager] Migrations complete for: #{slug}")
+    schema_name = "tenant_#{slug}"
+    migrations_path = Application.app_dir(:bindu_backend, "priv/repo/tenant_migrations")
+
+    task =
+      Task.Supervisor.async_nolink(
+        BinduBackend.TaskSupervisor,
+        fn ->
+          Ecto.Migrator.run(
+            Repo,
+            migrations_path,
+            :up,
+            all: true,
+            prefix: schema_name,
+            dynamic_repo: Repo
+          )
+        end
+      )
+
+    case Task.await(task, 60_000) do
+      migrations when is_list(migrations) ->
+        Logger.info("[SchemaManager] Migrations complete for: #{schema_name}")
         {:ok, :migrated}
 
       {:error, reason} ->
         {:error, reason}
+
+      error ->
+        {:error, inspect(error)}
     end
   end
 
@@ -44,9 +63,11 @@ defmodule BinduBackend.Tenancy.SchemaManager do
   Only called from admin tooling, never from the retry path.
   """
   def drop_schema(slug) do
-    case Triplex.drop(slug, Repo) do
+    schema_name = "tenant_#{slug}"
+
+    case Ecto.Adapters.SQL.query(Repo, "DROP SCHEMA IF EXISTS #{schema_name} CASCADE", []) do
       {:ok, _} ->
-        Logger.info("[SchemaManager] Dropped schema: #{slug}")
+        Logger.info("[SchemaManager] Dropped schema: #{schema_name}")
         {:ok, :dropped}
 
       {:error, reason} ->
@@ -65,13 +86,13 @@ defmodule BinduBackend.Tenancy.SchemaManager do
   Migrate ALL active tenants — run during a platform deployment.
   """
   def migrate_all_tenants do
-    alias BinduBackend.Public.Tenant
-    alias BinduBackend.Repo
     import Ecto.Query
+    alias BinduBackend.Tenants.Tenant
+    alias BinduBackend.Repo
 
     tenants =
       Tenant
-      |> where([t], t.status == :active)
+      |> where([t], t.status == "active")
       |> Repo.all()
 
     results =

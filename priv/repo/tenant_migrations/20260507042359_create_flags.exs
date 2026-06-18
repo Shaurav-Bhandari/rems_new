@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.TableStatus do
+defmodule BinduBackend.Repo.TenantMigrations.TableStatus do
   use Ecto.Migration
 
   def change do
@@ -8,10 +8,12 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:table_statuses, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_default, :boolean, default: false
-      add :is_system, :boolean, default: true   # system = cannot be deleted
+      add :is_system, :boolean, default: false   # system = cannot be deleted
       add :is_active, :boolean, default: true
+      add :position, :integer
       timestamps(type: :utc_datetime)
     end
 
@@ -20,10 +22,12 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:order_types, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_default, :boolean, default: false
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
+      add :position, :integer
       timestamps(type: :utc_datetime)
     end
 
@@ -32,10 +36,12 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:order_item_statuses, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_default, :boolean, default: false
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
+      add :position, :integer
       timestamps(type: :utc_datetime)
     end
 
@@ -44,10 +50,12 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:kot_statuses, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_default, :boolean, default: false
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
+      add :position, :integer
       timestamps(type: :utc_datetime)
     end
 
@@ -56,10 +64,12 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:kot_priorities, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_default, :boolean, default: false
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
+      add :level, :integer
       timestamps(type: :utc_datetime)
     end
 
@@ -68,10 +78,12 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:kitchen_stations, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_default, :boolean, default: false
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
+      add :position, :integer
       timestamps(type: :utc_datetime)
     end
 
@@ -80,6 +92,7 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:notification_types, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
@@ -91,6 +104,7 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:rule_types, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
@@ -102,35 +116,46 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:audit_events, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
       timestamps(type: :utc_datetime)
     end
+
     create unique_index(:audit_events, [:name])
 
     create table(:reservation_statuses, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
+      add :position, :integer
       timestamps(type: :utc_datetime)
     end
+
     create unique_index(:reservation_statuses, [:name])
+
     create table(:kot_item_statuses, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
+      add :position, :integer
       timestamps(type: :utc_datetime)
     end
 
     create unique_index(:kot_item_statuses, [:name])
+    
+
     create table(:rate_types, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
@@ -142,14 +167,16 @@ defmodule BinduBackend.Repo.Migrations.TableStatus do
     create table(:audit_severities, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :name, :string, null: false
+      add :label, :string
       add :description, :string
       add :is_system, :boolean, default: true
       add :is_active, :boolean, default: true
+      add :level, :integer
       timestamps(type: :utc_datetime)
     end
-  end
 
-  def change do
+    create unique_index(:audit_severities, [:name])
+
     alter table(:table_statuses) do
       add :color, :string, null: true, comment: "Hex color code e.g. #22c55e"
     end

@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateMenuCategory do
+defmodule BinduBackend.Repo.TenantMigrations.CreateMenuCategory do
   use Ecto.Migration
 
   def change do
@@ -44,7 +44,7 @@ defmodule BinduBackend.Repo.Migrations.CreateMenuCategory do
 
       timestamps(type: :utc_datetime)
     end
-    create index(:menu_item_modifiers, [:menu_item_id])
+    create index(:menu_item_modifier, [:menu_item_id])
 
     create table(:menu_item_prices, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
@@ -58,3 +58,4 @@ defmodule BinduBackend.Repo.Migrations.CreateMenuCategory do
     create index(:menu_item_prices, [:menu_item_id])
   end
 end
+

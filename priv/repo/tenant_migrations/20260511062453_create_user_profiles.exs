@@ -1,8 +1,9 @@
-defmodule BinduBackend.Repo.Migrations.CreateUserProfiles do
+defmodule BinduBackend.Repo.TenantMigrations.CreateUserProfiles do
   use Ecto.Migration
 
   def change do
-    create table(:user_profiles) do
+    create table(:user_profiles, primary_key: false) do
+      add :id, :uuid, primary_key: true, null: false, default: fragment("uuid_generate_v4()")
       add :profile_type, :string
       add :role_level, :integer
       add :employee_number, :string
@@ -30,7 +31,7 @@ defmodule BinduBackend.Repo.Migrations.CreateUserProfiles do
       add :preferred_language, :string
       add :notification_preferences, :map
       add :notes, :text
-      add :user_id, references(:users, on_delete: :nothing)
+      add :user_id, references(:users, type: :uuid, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end
@@ -38,3 +39,4 @@ defmodule BinduBackend.Repo.Migrations.CreateUserProfiles do
     create index(:user_profiles, [:user_id])
   end
 end
+

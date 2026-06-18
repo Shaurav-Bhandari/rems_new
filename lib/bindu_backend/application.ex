@@ -13,6 +13,7 @@ defmodule BinduBackend.Application do
       {DNSCluster, query: Application.get_env(:bindu_backend, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: BinduBackend.PubSub},
       {Finch, name: BinduBackend.Finch},
+      {Task.Supervisor, name: BinduBackend.TaskSupervisor},
       {Oban, Application.fetch_env!(:bindu_backend, Oban)},
       # Start a worker by calling: BinduBackend.Worker.start_link(arg)
       # {BinduBackend.Worker, arg},

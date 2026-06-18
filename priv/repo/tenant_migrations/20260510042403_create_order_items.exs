@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateOrderItems do
+defmodule BinduBackend.Repo.TenantMigrations.CreateOrderItems do
   use Ecto.Migration
 
   def change do
@@ -31,3 +31,4 @@ defmodule BinduBackend.Repo.Migrations.CreateOrderItems do
     create index(:order_item_modifiers, [:order_item_id])
   end
 end
+

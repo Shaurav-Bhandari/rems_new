@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateEmployee do
+defmodule BinduBackend.Repo.TenantMigrations.CreateEmployee do
   use Ecto.Migration
 
   def change do
@@ -45,3 +45,4 @@ defmodule BinduBackend.Repo.Migrations.CreateEmployee do
 
   end
 end
+

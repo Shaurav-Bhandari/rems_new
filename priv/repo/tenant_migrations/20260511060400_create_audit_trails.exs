@@ -1,4 +1,4 @@
-defmodule BinduBackend.Repo.Migrations.CreateAuditTrails do
+defmodule BinduBackend.Repo.TenantMigrations.CreateAuditTrails do
   use Ecto.Migration
 
   def change do
@@ -44,3 +44,4 @@ defmodule BinduBackend.Repo.Migrations.CreateAuditTrails do
     create index(:audit_trails, [:is_anomalous])
   end
 end
+
